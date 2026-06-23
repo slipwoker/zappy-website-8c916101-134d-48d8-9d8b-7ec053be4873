@@ -4650,6 +4650,10 @@ html body :root { --border-dark: #4A3030 !important; }
     font-size: 0.95rem;
   }
 }
+
+.site-footer {
+  display: none !important;
+}
 /* mobile-submenu-overflow-fix */
 @media (max-width: 768px) {
   .navbar .sub-menu.mobile-expanded,
