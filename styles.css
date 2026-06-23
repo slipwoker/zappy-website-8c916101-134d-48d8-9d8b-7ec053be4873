@@ -68,12 +68,12 @@
   src: url('assets/fonts/Rubik-Bold.woff2') format('woff2');
 }
 :root {
---primary: #CC3333;
-  --secondary: #8B0000;
-  --accent: #E63946;
-  --bg-light: #FFFFFF;
-  --bg-dark: #1A1A1A;
-  --text-dark: #1A1A1A;
+  --primary: #CC3333 !important;
+  --secondary: #8B0000 !important;
+  --accent: #E63946 !important;
+  --bg-light: #FFFFFF !important;
+  --bg-dark: #1A1A1A !important;
+  --text-dark: #1A1A1A !important;
   --text-light: #FFFFFF;
   --text-muted: #666666;
   --border-light: #8b7d7d;
