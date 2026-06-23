@@ -4663,6 +4663,18 @@ html body :root { --border-dark: #4A3030 !important; }
 .site-footer {
   display: none !important;
 }
+
+.index-hero-section [data-zappy-zoom-wrapper]::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(to left, var(--primary, var(--primary-color)) 0%, rgba(204, 51, 51, 0.15) 50%, rgba(204, 51, 51, 0) 100%);
+  z-index: 2;
+  pointer-events: none;
+}
 /* mobile-submenu-overflow-fix */
 @media (max-width: 768px) {
   .navbar .sub-menu.mobile-expanded,
