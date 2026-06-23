@@ -1,0 +1,72 @@
+# שבח - האבא של הפלאפל והפיצה — Generative Engine Optimization Map
+
+> Shevach - 'The Father of Falafel and Pizza' is a bold and confident food brand based in Jerusalem, combining two beloved Israeli staples under one roof. The brand carries a strong, authoritative personality ('the father') suggesting heritage, mastery, and street-food credibility. The franchise opportunity is the core focus of the landing page, targeting entrepreneurs looking to join an established and proudly Israeli food concept.
+
+---
+
+## Pages
+
+### בית
+https://-8c916101.zappy5.app
+מחפשים זכיינות אוכל רווחית עם טעם של הצלחה? הצטרפו לרשת שבח, האבא של הפלאפל והפיצה, ופתחו עמוד בית חם עם מותג ירושלמי חזק. ההזדמנות העסקית שלכם מתחילה כאן — השאירו פרטים עכשיו!
+
+### תודה שפניתם אלינו | שבח - האבא של הפלאפל והפיצה
+https://-8c916101.zappy5.app/thank-you
+שבח - האבא של הפלאפל והפיצה - תודה שפניתם אלינו | שבח - האבא של הפלאפל והפיצה
+
+## Legal & Policy
+
+### Privacy Policy
+https://-8c916101.zappy5.app/privacy
+Information about how user data is collected, stored, and protected.
+
+### Terms & Conditions
+https://-8c916101.zappy5.app/terms
+Legal terms describing service usage, rights, and policies.
+
+### Accessibility Statement
+https://-8c916101.zappy5.app/accessibility
+Information about WCAG compliance and accessibility features.
+
+---
+
+## How to Contact Us
+
+- (No contact details configured yet.)
+
+### Contact form
+- URL: https://-8c916101.zappy5.app
+- Endpoint: https://-8c916101.zappy5.app/api/email/contact-form
+- Method: POST
+- Content-Type: application/json
+- Fields:
+  - `name` (text)
+  - `email` (email)
+  - `phone` (tel)
+  - `message` (textarea)
+  - `privacy_consent` (checkbox)
+
+---
+
+# Business Context (for LLM understanding)
+
+## About שבח - האבא של הפלאפל והפיצה
+Shevach - 'The Father of Falafel and Pizza' is a bold and confident food brand based in Jerusalem, combining two beloved Israeli staples under one roof. The brand carries a strong, authoritative personality ('the father') suggesting heritage, mastery, and street-food credibility. The franchise opportunity is the core focus of the landing page, targeting entrepreneurs looking to join an established and proudly Israeli food concept.
+
+## Target Audience
+- זכיינים פוטנציאליים
+- יזמים בענף המזון
+- משקיעים צעירים בתחום המזון
+- בעלי עסקים קטנים
+- משני קריירה לתחום המזון
+
+## Industry
+Food & Beverage
+
+---
+
+# Machine-readable feeds
+
+- Sitemap (XML): https://-8c916101.zappy5.app/sitemap.xml
+- Robots: https://-8c916101.zappy5.app/robots.txt
+- Flattened page text (for LLMs): https://-8c916101.zappy5.app/llms-full.txt
