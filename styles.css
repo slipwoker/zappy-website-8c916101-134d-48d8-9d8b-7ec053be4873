@@ -4416,6 +4416,240 @@ nav.navbar .sub-menu li a:hover { color: #CC3333 !important; background-color: r
 html body :root { --border-light: #E8D0D0 !important; }
 html body :root { --border-dark: #4A3030 !important; }
 
+
+/* Added Component Styles */
+/* ===== SHBACH PIZZA SECTION ===== */
+.shbach-pizza-section {
+  background-color: var(--background-color, #FFFFFF);
+  padding: 0;
+  font-family: system-ui, sans-serif;
+  direction: rtl;
+  color: var(--text-color, #1A1A1A);
+  overflow: hidden;
+}
+
+.shbach-pizza-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 600px;
+  max-width: 1400px;
+  margin: 0 auto;
+  align-items: stretch;
+}
+
+/* IMAGE COLUMN */
+.shbach-pizza-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  min-height: 400px;
+}
+
+.shbach-pizza-main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.7s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.shbach-pizza-image-wrapper:hover .shbach-pizza-main-image {
+  transform: scale(1.04);
+}
+
+.shbach-pizza-badge {
+  position: absolute;
+  bottom: 32px;
+  right: 32px;
+  background-color: var(--primary-color, #CC3333);
+  color: #FFFFFF;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 10px 22px;
+  border-radius: 40px;
+  box-shadow: 0 8px 24px rgba(204, 51, 51, 0.35);
+  z-index: 2;
+  white-space: nowrap;
+}
+
+/* CONTENT COLUMN */
+.shbach-pizza-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 70px 60px;
+  background-color: var(--background-color, #FFFFFF);
+}
+
+.shbach-pizza-label {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary-color, #CC3333);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 16px;
+}
+
+.shbach-pizza-title {
+  font-size: 2.6rem;
+  font-weight: 900;
+  line-height: 1.2;
+  color: var(--text-color, #1A1A1A);
+  margin-bottom: 24px;
+}
+
+.shbach-pizza-description {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--text-secondary-color, #666666);
+  margin-bottom: 32px;
+  max-width: 520px;
+}
+
+/* FEATURES LIST */
+.shbach-pizza-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 36px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.shbach-pizza-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--text-color, #1A1A1A);
+}
+
+.shbach-pizza-feature-icon {
+  flex-shrink: 0;
+  color: var(--primary-color, #CC3333);
+}
+
+/* CTA BUTTONS */
+.shbach-pizza-cta-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.shbach-pizza-cta-primary,
+.shbach-pizza-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 50px;
+  padding: 16px 36px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-align: center;
+  min-width: 200px;
+  border: 2px solid transparent;
+}
+
+.shbach-pizza-cta-primary {
+  background-color: var(--primary-color, #CC3333);
+  color: #FFFFFF;
+  border-color: var(--primary-color, #CC3333);
+  box-shadow: 0 6px 20px rgba(204, 51, 51, 0.25);
+}
+
+.shbach-pizza-cta-primary:hover {
+  background-color: var(--secondary-color, #8B0000);
+  border-color: var(--secondary-color, #8B0000);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(139, 0, 0, 0.35);
+}
+
+.shbach-pizza-cta-secondary {
+  background-color: transparent;
+  color: var(--text-color, #1A1A1A);
+  border-color: #D1D5DB;
+}
+
+.shbach-pizza-cta-secondary:hover {
+  background-color: var(--surface-color, #FFF5F5);
+  border-color: var(--primary-color, #CC3333);
+  color: var(--primary-color, #CC3333);
+  transform: translateY(-2px);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .shbach-pizza-content {
+    padding: 50px 40px;
+  }
+  
+  .shbach-pizza-title {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .shbach-pizza-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .shbach-pizza-image-wrapper {
+    min-height: 320px;
+    max-height: 450px;
+    order: -1;
+  }
+  
+  .shbach-pizza-content {
+    padding: 40px 24px;
+  }
+  
+  .shbach-pizza-title {
+    font-size: 1.9rem;
+  }
+  
+  .shbach-pizza-description {
+    font-size: 1rem;
+  }
+  
+  .shbach-pizza-cta-wrapper {
+    flex-direction: column;
+  }
+  
+  .shbach-pizza-cta-primary,
+  .shbach-pizza-cta-secondary {
+    width: 100%;
+    min-width: unset;
+  }
+  
+  .shbach-pizza-badge {
+    bottom: 20px;
+    right: 20px;
+    font-size: 0.72rem;
+    padding: 8px 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .shbach-pizza-title {
+    font-size: 1.6rem;
+  }
+  
+  .shbach-pizza-content {
+    padding: 32px 18px;
+  }
+  
+  .shbach-pizza-feature-item {
+    font-size: 0.95rem;
+  }
+}
 /* mobile-submenu-overflow-fix */
 @media (max-width: 768px) {
   .navbar .sub-menu.mobile-expanded,
