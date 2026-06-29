@@ -5435,8 +5435,22 @@ form.contact-form .contact-input, form.contact-form .contact-textarea { width: 1
 
 /* ZAPPY_SECTION_BG_TYPE_FIX */
 [data-zappy-bg-type="color"] { background-image: none !important; background-color: var(--zappy-bg-color, transparent) !important; }
-[data-zappy-bg-type="image"] { background-image: linear-gradient(var(--zappy-bg-overlay, rgba(0,0,0,0)), var(--zappy-bg-overlay, rgba(0,0,0,0))), var(--zappy-bg-image, none) !important; background-size: cover !important; background-position: center !important; background-repeat: no-repeat !important; }
+[data-zappy-bg-type="image"] { background-image: linear-gradient(var(--zappy-bg-overlay, rgba(0,0,0,0)), var(--zappy-bg-overlay, rgba(0,0,0,0))), var(--zappy-bg-image, none) !important; background-size: var(--zappy-bg-size, cover) !important; background-position: var(--zappy-bg-position, center) !important; background-repeat: no-repeat !important; }
 [data-zappy-bg-type="video"] { background-image: none !important; }
+/* Full-bleed hero single-image model: overlay/darkness tint layer sits above the
+   <img data-hero-bg> and below the hero content. Inline styles carry the tint;
+   this rule is the positioning safety-net. */
+.zappy-hero-overlay { position: absolute !important; inset: 0 !important; z-index: 1 !important; pointer-events: none !important; }
+section[data-hero-type^="fullscreen"] > .hero-bg-wrapper,
+section[data-hero-type^="fullscreen"] > [class*="hero-bg"],
+section[class*="hero"][data-zappy-bg-overlay-opacity] > .hero-bg-wrapper {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
 
 
 /* ZAPPY_IOS_NAVBAR_GAP_FIX */
@@ -5699,6 +5713,88 @@ html[dir="ltr"] .service-detail.service-reverse .service-detail-content { order:
     min-width: 0 !important;
     overflow: hidden !important;
   }
+}
+
+
+/* ZAPPY_FADE_BLEED_HERO_GEOMETRY_V2_ENSURE — gradual fade panel + inline-start copy lane for stored fade-bleed heroes */
+section[data-hero-treatment="fade-bleed"],
+[data-layout-spec="בית-hero"] {
+  position: relative; isolation: isolate; overflow: hidden;
+  display: flex !important; align-items: center !important; justify-content: flex-start !important;
+}
+section[data-hero-treatment="fade-bleed"] > .hero-fade-img,
+section[data-hero-treatment="fade-bleed"] > [data-hero-bg],
+section[data-hero-treatment="fade-bleed"] > img:first-child,
+[data-layout-spec="בית-hero"] > .hero-fade-img,
+[data-layout-spec="בית-hero"] > [data-hero-bg],
+[data-layout-spec="בית-hero"] > img:first-child {
+  position: absolute !important; inset: 0 !important; width: 100% !important; height: 100% !important;
+  object-fit: cover !important; object-position: right center !important; margin: 0 !important; z-index: 0 !important;
+  -webkit-mask-image: none !important; mask-image: none !important;
+}
+section[data-hero-treatment="fade-bleed"]::before,
+[data-layout-spec="בית-hero"]::before {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(to right, var(--hero-fade-color, var(--bg-light, #ffffff)) 0%, var(--hero-fade-color, var(--bg-light, #ffffff)) 10%, transparent 58%) !important;
+}
+html[dir="rtl"] section[data-hero-treatment="fade-bleed"],
+html[dir="rtl"] [data-layout-spec="בית-hero"] { justify-content: flex-start !important; }
+html[dir="rtl"] section[data-hero-treatment="fade-bleed"] > .hero-fade-img,
+html[dir="rtl"] section[data-hero-treatment="fade-bleed"] > [data-hero-bg],
+html[dir="rtl"] section[data-hero-treatment="fade-bleed"] > img:first-child,
+html[dir="rtl"] [data-layout-spec="בית-hero"] > .hero-fade-img,
+html[dir="rtl"] [data-layout-spec="בית-hero"] > [data-hero-bg],
+html[dir="rtl"] [data-layout-spec="בית-hero"] > img:first-child { object-position: left center !important; }
+html[dir="rtl"] section[data-hero-treatment="fade-bleed"]::before,
+html[dir="rtl"] [data-layout-spec="בית-hero"]::before {
+  background: linear-gradient(to left, var(--hero-fade-color, var(--bg-light, #ffffff)) 0%, var(--hero-fade-color, var(--bg-light, #ffffff)) 10%, transparent 58%) !important;
+}
+section[data-hero-treatment="fade-bleed"] .hero-fade-content,
+[data-layout-spec="בית-hero"] .hero-fade-content {
+  position: relative !important; z-index: 2 !important; width: min(600px, 52%) !important; max-width: min(600px, 52%) !important;
+  margin-inline-start: 0 !important; margin-inline-end: auto !important; justify-self: start !important; align-self: center !important;
+  left: auto !important; right: auto !important; top: auto !important; bottom: auto !important; transform: none !important;
+  display: flex; flex-direction: column; justify-content: center; box-sizing: border-box;
+  padding-inline: clamp(24px, 4vw, 48px) !important;
+}
+@media (max-width: 768px) {
+  section[data-hero-treatment="fade-bleed"],
+[data-layout-spec="בית-hero"] { display: block !important; }
+  section[data-hero-treatment="fade-bleed"]::before,
+[data-layout-spec="בית-hero"]::before { background: linear-gradient(to bottom, transparent 0%, var(--hero-fade-color, var(--bg-light, #ffffff)) 55%, var(--hero-fade-color, var(--bg-light, #ffffff)) 100%) !important; }
+  html[dir="rtl"] section[data-hero-treatment="fade-bleed"]::before,
+html[dir="rtl"] [data-layout-spec="בית-hero"]::before { background: linear-gradient(to bottom, transparent 0%, var(--hero-fade-color, var(--bg-light, #ffffff)) 55%, var(--hero-fade-color, var(--bg-light, #ffffff)) 100%) !important; }
+  section[data-hero-treatment="fade-bleed"] .hero-fade-content,
+[data-layout-spec="בית-hero"] .hero-fade-content { width: 100% !important; max-width: 100% !important; padding-inline: clamp(16px, 5vw, 24px) !important; }
+}
+
+
+/* ZAPPY_FULLSCREEN_HERO_SCRIM_OPACITY_CAP — keep fullscreen hero images visible while preserving text contrast */
+section[data-hero-type="fullscreen-scrim"]:not([data-zappy-bg-overlay-opacity]) > [class*="scrim"],
+section[data-hero-type="fullscreen-scrim"]:not([data-zappy-bg-overlay-opacity]) > [class*="bg-wrapper"] [class*="scrim"],
+section[class*="hero"]:not([data-zappy-bg-overlay-opacity]) > .hero-scrim,
+section[class*="hero"]:not([data-zappy-bg-overlay-opacity]) > [class*="hero-scrim"],
+section[class*="hero"]:not([data-zappy-bg-overlay-opacity]) > [class*="bg-wrapper"] [class*="scrim"] {
+  opacity: 1 !important;
+  mix-blend-mode: normal !important;
+  background-image: linear-gradient(180deg, rgba(0,0,0,0.16) 0%, rgba(0,0,0,0.32) 62%, rgba(0,0,0,0.42) 100%), linear-gradient(to right, rgba(0,0,0,0.52) 0%, rgba(0,0,0,0.36) 36%, rgba(0,0,0,0.06) 78%) !important;
+  background-color: transparent !important;
+}
+html[dir="rtl"] section[data-hero-type="fullscreen-scrim"]:not([data-zappy-bg-overlay-opacity]) > [class*="scrim"],
+html[dir="rtl"] section[data-hero-type="fullscreen-scrim"]:not([data-zappy-bg-overlay-opacity]) > [class*="bg-wrapper"] [class*="scrim"],
+html[dir="rtl"] section[class*="hero"]:not([data-zappy-bg-overlay-opacity]) > .hero-scrim,
+html[dir="rtl"] section[class*="hero"]:not([data-zappy-bg-overlay-opacity]) > [class*="hero-scrim"],
+html[dir="rtl"] section[class*="hero"]:not([data-zappy-bg-overlay-opacity]) > [class*="bg-wrapper"] [class*="scrim"] {
+  background-image: linear-gradient(180deg, rgba(0,0,0,0.16) 0%, rgba(0,0,0,0.32) 62%, rgba(0,0,0,0.42) 100%), linear-gradient(to left, rgba(0,0,0,0.52) 0%, rgba(0,0,0,0.36) 36%, rgba(0,0,0,0.06) 78%) !important;
+}
+section[data-hero-type="fullscreen-scrim"]:not([data-zappy-bg-overlay-opacity]) > img[data-hero-bg],
+section[data-hero-type="fullscreen-scrim"]:not([data-zappy-bg-overlay-opacity]) > [class*="hero-bg"] img[data-hero-bg],
+section[data-hero-type="fullscreen-scrim"]:not([data-zappy-bg-overlay-opacity]) > [class*="bg-wrapper"] img[data-hero-bg],
+section[class*="hero"]:not([data-zappy-bg-overlay-opacity]):has(> [class*="scrim"]) > img[data-hero-bg],
+section[class*="hero"]:not([data-zappy-bg-overlay-opacity]) > [class*="bg-wrapper"] img[data-hero-bg] {
+  opacity: 1 !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
 }
 
 
