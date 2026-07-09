@@ -7038,6 +7038,213 @@ html body :root { --border-dark: #4A3030 !important; }
     border-radius: 12px;
   }
 }
+
+/* Added Component Styles */
+.delete-section {
+  background: var(--surface-color, #FFF5F5);
+  padding: 80px 20px;
+  direction: rtl;
+  font-family: system-ui, sans-serif;
+}
+
+.delete-container {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  flex-wrap: wrap;
+}
+
+.delete-card {
+  flex: 1 1 380px;
+  background: var(--background-color, #FFFFFF);
+  border-radius: 20px;
+  padding: 48px 40px;
+  box-shadow: 0 8px 32px rgba(204, 51, 51, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(204, 51, 51, 0.12);
+  text-align: center;
+}
+
+.delete-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.delete-icon-circle {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(204, 51, 51, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-icon-svg {
+  width: 36px;
+  height: 36px;
+  color: var(--primary-color, #CC3333);
+}
+
+.delete-heading {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-color, #1A1A1A);
+  margin: 0 0 12px 0;
+  line-height: 1.3;
+}
+
+.delete-description {
+  font-size: 1.05rem;
+  color: var(--text-secondary-color, #666666);
+  line-height: 1.7;
+  margin: 0 0 36px 0;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.delete-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.delete-btn-cancel,
+.delete-btn-confirm {
+  padding: 14px 36px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  border: 2px solid transparent;
+  font-family: system-ui, sans-serif;
+  min-width: 130px;
+}
+
+.delete-btn-cancel {
+  background: var(--background-color, #FFFFFF);
+  color: var(--text-color, #1A1A1A);
+  border-color: #D1D5DB;
+}
+
+.delete-btn-cancel:hover {
+  background: #F9FAFB;
+  border-color: #9CA3AF;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.delete-btn-cancel:focus-visible {
+  outline: 3px solid var(--primary-color, #CC3333);
+  outline-offset: 2px;
+}
+
+.delete-btn-confirm {
+  background: var(--primary-color, #CC3333);
+  color: #FFFFFF;
+  border-color: var(--primary-color, #CC3333);
+}
+
+.delete-btn-confirm:hover {
+  background: var(--secondary-color, #8B0000);
+  border-color: var(--secondary-color, #8B0000);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(204, 51, 51, 0.3);
+}
+
+.delete-btn-confirm:focus-visible {
+  outline: 3px solid var(--primary-color, #CC3333);
+  outline-offset: 2px;
+}
+
+.delete-image-area {
+  flex: 1 1 320px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.delete-illustration {
+  max-width: 100%;
+  height: auto;
+  border-radius: 16px;
+}
+
+@media (max-width: 768px) {
+  .delete-section {
+    padding: 48px 16px;
+  }
+
+  .delete-container {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .delete-card {
+    padding: 36px 24px;
+    border-radius: 16px;
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
+  .delete-heading {
+    font-size: 1.5rem;
+  }
+
+  .delete-description {
+    font-size: 0.95rem;
+    margin-bottom: 28px;
+  }
+
+  .delete-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .delete-btn-cancel,
+  .delete-btn-confirm {
+    width: 100%;
+    text-align: center;
+  }
+
+  .delete-icon-circle {
+    width: 60px;
+    height: 60px;
+  }
+
+  .delete-icon-svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .delete-image-area {
+    order: -1;
+    flex: 1 1 auto;
+  }
+
+  .delete-illustration {
+    max-width: 260px;
+  }
+}
+
+@media (max-width: 480px) {
+  .delete-card {
+    padding: 28px 18px;
+  }
+
+  .delete-heading {
+    font-size: 1.35rem;
+  }
+
+  .delete-description {
+    font-size: 0.9rem;
+  }
+}
 /* mobile-submenu-overflow-fix */
 @media (max-width: 768px) {
   .navbar .sub-menu.mobile-expanded,

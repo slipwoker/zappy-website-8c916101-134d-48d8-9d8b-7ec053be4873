@@ -1598,6 +1598,43 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 })();
 
+/* Added Component Script */
+(function() {
+    const confirmBtn = document.querySelector('.delete-btn-confirm');
+    const cancelBtn = document.querySelector('.delete-btn-cancel');
+    const deleteSection = document.querySelector('.delete-section');
+
+    function handleDelete() {
+      if (deleteSection) {
+        deleteSection.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+        deleteSection.style.opacity = '0';
+        deleteSection.style.transform = 'scale(0.96)';
+        setTimeout(() => {
+          deleteSection.remove();
+        }, 350);
+      }
+    }
+
+    function handleCancel() {
+      if (deleteSection) {
+        deleteSection.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        deleteSection.style.opacity = '0';
+        deleteSection.style.transform = 'scale(0.98)';
+        setTimeout(() => {
+          deleteSection.remove();
+        }, 300);
+      }
+    }
+
+    if (confirmBtn) {
+      confirmBtn.addEventListener('click', handleDelete);
+    }
+
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', handleCancel);
+    }
+  })();
+
 
 /* ZAPPY_PUBLISHED_LIGHTBOX_RUNTIME */
 (function(){
