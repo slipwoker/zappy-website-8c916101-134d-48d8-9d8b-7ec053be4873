@@ -5182,6 +5182,215 @@ html body :root { --border-dark: #4A3030 !important; }
     font-size: 1.4rem;
   }
 }
+
+/* Added Component Styles */
+/* ==========================================================================
+   Explanation Section - Why Choose Shvah
+   ========================================================================== */
+.sbh-explanation-section {
+  background-color: var(--surface-color, #FFF5F5);
+  padding: 80px 20px;
+  direction: rtl;
+  font-family: system-ui, sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.sbh-explanation-section::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  left: -60px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(204, 51, 51, 0.06) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.sbh-explanation-section::after {
+  content: '';
+  position: absolute;
+  bottom: -40px;
+  right: -40px;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(204, 51, 51, 0.05) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.sbh-explanation-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Header */
+.sbh-explanation-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.sbh-explanation-title {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 800;
+  color: var(--text-color, #1A1A1A);
+  margin: 0 0 16px 0;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.sbh-explanation-subtitle {
+  font-size: 1.15rem;
+  color: var(--text-secondary-color, #666666);
+  margin: 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+/* Grid */
+.sbh-explanation-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+/* Card */
+.sbh-explanation-card {
+  background-color: var(--background-color, #FFFFFF);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.sbh-explanation-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(204, 51, 51, 0.12), 0 6px 12px rgba(0, 0, 0, 0.06);
+}
+
+.sbh-explanation-card-image-wrapper {
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  position: relative;
+}
+
+.sbh-explanation-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.sbh-explanation-card:hover .sbh-explanation-card-image {
+  transform: scale(1.06);
+}
+
+.sbh-explanation-card-content {
+  padding: 28px 24px 32px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.sbh-explanation-card-icon {
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+}
+
+.sbh-explanation-card-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-color, #1A1A1A);
+  margin: 0 0 12px 0;
+  line-height: 1.3;
+}
+
+.sbh-explanation-card-text {
+  font-size: 1rem;
+  color: var(--text-secondary-color, #666666);
+  line-height: 1.75;
+  margin: 0;
+  flex-grow: 1;
+}
+
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
+@media (max-width: 992px) {
+  .sbh-explanation-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  
+  .sbh-explanation-section {
+    padding: 60px 16px;
+  }
+  
+  .sbh-explanation-header {
+    margin-bottom: 40px;
+  }
+}
+
+@media (max-width: 640px) {
+  .sbh-explanation-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .sbh-explanation-section {
+    padding: 48px 16px;
+  }
+  
+  .sbh-explanation-header {
+    margin-bottom: 32px;
+  }
+  
+  .sbh-explanation-card-image-wrapper {
+    height: 200px;
+  }
+  
+  .sbh-explanation-card-content {
+    padding: 22px 18px 26px;
+  }
+  
+  .sbh-explanation-title {
+    font-size: 1.6rem;
+  }
+  
+  .sbh-explanation-subtitle {
+    font-size: 1rem;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .sbh-explanation-card,
+  .sbh-explanation-card-image {
+    transition: none;
+  }
+  
+  .sbh-explanation-card:hover {
+    transform: none;
+  }
+  
+  .sbh-explanation-card:hover .sbh-explanation-card-image {
+    transform: none;
+  }
+}
 /* mobile-submenu-overflow-fix */
 @media (max-width: 768px) {
   .navbar .sub-menu.mobile-expanded,
