@@ -1635,6 +1635,29 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   })();
 
+/* Added Component Script */
+/* Optional: Add confirmation dialog interaction */
+document.addEventListener('DOMContentLoaded', function() {
+  const confirmBtn = document.querySelector('.shb-delete-btn-confirm');
+  const cancelBtn = document.querySelector('.shb-delete-btn-cancel');
+
+  if (confirmBtn) {
+    confirmBtn.addEventListener('click', function() {
+      // Placeholder for delete action
+      console.log('Section deletion confirmed');
+      // Add your actual delete logic here
+    });
+  }
+
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', function() {
+      // Placeholder for cancel action
+      console.log('Section deletion cancelled');
+      // Add your actual cancel logic here
+    });
+  }
+});
+
 
 /* ZAPPY_PUBLISHED_LIGHTBOX_RUNTIME */
 (function(){
