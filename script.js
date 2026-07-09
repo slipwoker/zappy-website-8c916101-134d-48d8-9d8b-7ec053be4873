@@ -1572,6 +1572,9 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
+/* Added Component Script */
+// No JavaScript required for this static footer bar.
+
 
 /* ZAPPY_PUBLISHED_LIGHTBOX_RUNTIME */
 (function(){
