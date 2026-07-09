@@ -34,24 +34,6 @@ Information about WCAG compliance and accessibility features.
 
 - (No contact details configured yet.)
 
-### Contact form
-- URL: https://example.com
-- Endpoint: https://example.com/api/email/contact-form
-- Method: POST
-- Content-Type: application/json
-- Fields:
-  - `fullName` (text, required)
-  - `phone` (tel, required)
-  - `email` (email, required)
-  - `city` (text, required)
-  - `budget` (select)
-  - `foodExperience` (radio, required)
-  - `foodExperience` (radio)
-  - `preferredLocation` (radio, required)
-  - `preferredLocation` (radio)
-  - `locationDetails` (text)
-  - `privacy_consent` (checkbox, required)
-
 ---
 
 # Business Context (for LLM understanding)
