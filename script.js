@@ -1684,6 +1684,55 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
+/* Added Component Script */
+/* Optional: subtle count-up animation for stats when they scroll into view */
+document.addEventListener('DOMContentLoaded', function() {
+  const statsSection = document.querySelector('.taste-revolution__stats');
+  if (!statsSection) return;
+
+  const statNumbers = statsSection.querySelectorAll('.taste-revolution__stat-number');
+  let animated = false;
+
+  function animateStats() {
+    if (animated) return;
+    const rect = statsSection.getBoundingClientRect();
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+
+    if (rect.top <= windowHeight * 0.85 && rect.bottom >= 0) {
+      animated = true;
+      statNumbers.forEach(function(el) {
+        const text = el.textContent.trim();
+        const hasPlus = text.includes('+');
+        const hasPercent = text.includes('%');
+        const numericPart = parseInt(text.replace(/[^0-9]/g, ''), 10);
+        if (isNaN(numericPart)) return;
+
+        const suffix = hasPlus ? '+' : (hasPercent ? '%' : '');
+        const duration = 1800;
+        const startTime = performance.now();
+
+        function update(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = Math.floor(eased * numericPart);
+          el.textContent = current.toLocaleString() + suffix;
+          if (progress < 1) {
+            requestAnimationFrame(update);
+          } else {
+            el.textContent = numericPart.toLocaleString() + suffix;
+          }
+        }
+
+        requestAnimationFrame(update);
+      });
+    }
+  }
+
+  window.addEventListener('scroll', animateStats, { passive: true });
+  animateStats();
+});
+
 
 /* ZAPPY_PUBLISHED_LIGHTBOX_RUNTIME */
 (function(){

@@ -8310,6 +8310,303 @@ html body :root { --border-dark: #4A3030 !important; }
     height: 160px;
   }
 }
+
+/* Added Component Styles */
+.taste-revolution {
+  background: var(--background-color, #FFFFFF);
+  padding: 80px 20px;
+  direction: rtl;
+  font-family: system-ui, sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.taste-revolution::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(204, 51, 51, 0.06) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.taste-revolution::after {
+  content: '';
+  position: absolute;
+  bottom: -80px;
+  left: -40px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(204, 51, 51, 0.04) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.taste-revolution__container {
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Header */
+.taste-revolution__header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.taste-revolution__badge {
+  display: inline-block;
+  background: var(--primary-color, #CC3333);
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 6px 20px;
+  border-radius: 50px;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+.taste-revolution__title {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: var(--text-color, #1A1A1A);
+  margin: 0 0 16px 0;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+}
+
+.taste-revolution__subtitle {
+  font-size: 1.15rem;
+  color: var(--text-secondary-color, #666666);
+  max-width: 650px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* Grid */
+.taste-revolution__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin-bottom: 60px;
+}
+
+/* Card */
+.taste-revolution__card {
+  background: var(--surface-color, #FFF5F5);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+}
+
+.taste-revolution__card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(204, 51, 51, 0.12);
+}
+
+.taste-revolution__card-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+}
+
+.taste-revolution__card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.taste-revolution__card:hover .taste-revolution__card-image {
+  transform: scale(1.06);
+}
+
+.taste-revolution__card-icon {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  background: var(--primary-color, #CC3333);
+  color: #FFFFFF;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(204, 51, 51, 0.35);
+  transition: transform 0.3s ease;
+}
+
+.taste-revolution__card:hover .taste-revolution__card-icon {
+  transform: scale(1.1) rotate(-5deg);
+}
+
+.taste-revolution__card-content {
+  padding: 22px 24px 28px;
+  flex: 1;
+}
+
+.taste-revolution__card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-color, #1A1A1A);
+  margin: 0 0 10px 0;
+}
+
+.taste-revolution__card-text {
+  font-size: 0.95rem;
+  color: var(--text-secondary-color, #666666);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Stats */
+.taste-revolution__stats {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  flex-wrap: wrap;
+  margin-bottom: 56px;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, var(--primary-color, #CC3333) 0%, var(--secondary-color, #8B0000) 100%);
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(204, 51, 51, 0.25);
+}
+
+.taste-revolution__stat-item {
+  text-align: center;
+  min-width: 120px;
+}
+
+.taste-revolution__stat-number {
+  display: block;
+  font-size: 2.6rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+
+.taste-revolution__stat-label {
+  display: block;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+}
+
+/* CTA */
+.taste-revolution__cta {
+  text-align: center;
+}
+
+.taste-revolution__cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--primary-color, #CC3333);
+  color: #FFFFFF;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 16px 36px;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 6px 20px rgba(204, 51, 51, 0.3);
+}
+
+.taste-revolution__cta-button svg {
+  transition: transform 0.3s ease;
+}
+
+.taste-revolution__cta-button:hover {
+  background: var(--secondary-color, #8B0000);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(204, 51, 51, 0.4);
+}
+
+.taste-revolution__cta-button:hover svg {
+  transform: translateX(-4px);
+}
+
+.taste-revolution__cta-button:focus-visible {
+  outline: 3px solid var(--accent-color, #E63946);
+  outline-offset: 3px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .taste-revolution__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .taste-revolution__title {
+    font-size: 2.2rem;
+  }
+
+  .taste-revolution__stats {
+    gap: 28px;
+    padding: 30px 16px;
+  }
+
+  .taste-revolution__stat-number {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .taste-revolution {
+    padding: 50px 16px;
+  }
+
+  .taste-revolution__grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .taste-revolution__title {
+    font-size: 1.8rem;
+  }
+
+  .taste-revolution__subtitle {
+    font-size: 1rem;
+  }
+
+  .taste-revolution__card-image-wrapper {
+    height: 190px;
+  }
+
+  .taste-revolution__stats {
+    flex-direction: column;
+    gap: 22px;
+    align-items: center;
+  }
+
+  .taste-revolution__stat-item {
+    min-width: unset;
+  }
+
+  .taste-revolution__stat-number {
+    font-size: 2.2rem;
+  }
+
+  .taste-revolution__cta-button {
+    width: 100%;
+    justify-content: center;
+    padding: 15px 24px;
+    font-size: 1rem;
+  }
+}
 /* mobile-submenu-overflow-fix */
 @media (max-width: 768px) {
   .navbar .sub-menu.mobile-expanded,
