@@ -1575,6 +1575,29 @@ document.addEventListener('DOMContentLoaded', function() {
 /* Added Component Script */
 // No JavaScript required for this static footer bar.
 
+/* Added Component Script */
+(function() {
+  const section = document.querySelector('.shb-delete-section');
+  if (!section) return;
+
+  const cancelBtn = section.querySelector('.shb-delete-btn-cancel');
+  const confirmBtn = section.querySelector('.shb-delete-btn-confirm');
+
+  cancelBtn.addEventListener('click', function() {
+    // Placeholder: handle cancel — could navigate back or close modal
+    console.log('מחיקת מקטע בוטלה');
+    // Example: section.style.display = 'none'; or trigger a custom event
+  });
+
+  confirmBtn.addEventListener('click', function() {
+    // Placeholder: handle deletion logic
+    if (confirm('האם אתה בטוח לחלוטין? פעולה זו אינה הפיכה.')) {
+      console.log('מקטע נמחק');
+      // section.remove(); or dispatch custom event
+    }
+  });
+})();
+
 
 /* ZAPPY_PUBLISHED_LIGHTBOX_RUNTIME */
 (function(){
