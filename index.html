@@ -1437,11 +1437,10 @@ html{box-sizing:border-box;-webkit-text-size-adjust:100%}*,*::before,*::after{bo
       <p class="franchise-form-subtitle">מלאו את הפרטים ונחזור אליכם עם כל המידע</p>
     </div>
 
-    <form class="franchise-form" novalidate="">
-      <div class="form-grid">
+    <form class="franchise-form" novalidate=""><div class="form-grid">
         <div class="form-group form-group-full">
           <label for="location" class="form-label">מהיכן בארץ? *</label>
-          <input type="text" id="location" name="location" class="form-input" placeholder="עיר / אזור">
+          <input type="text" id="location" name="location" class="form-input" placeholder="עיר / אזור" required="">
         </div>
 
         <div class="form-group">
@@ -1461,7 +1460,7 @@ html{box-sizing:border-box;-webkit-text-size-adjust:100%}*,*::before,*::after{bo
 
         <div class="form-group form-group-full">
           <fieldset class="form-fieldset">
-            <legend class="form-label">האם יש לך ניסיון קודם בעסקים / מזון?</legend>
+            <legend class="form-label">האם יש לך ניסיון ניהולי?</legend>
             <div class="radio-group">
               <label class="radio-option">
                 <input type="radio" name="experience" value="yes" class="radio-input">
@@ -1475,28 +1474,36 @@ html{box-sizing:border-box;-webkit-text-size-adjust:100%}*,*::before,*::after{bo
               </label>
             </div>
           </fieldset>
+          <div class="form-group form-group-full" style="margin-top: 16px;">
+            <label for="experience-details" class="form-label">אם כן, ספר איפה?</label>
+            <input type="text" id="experience-details" name="experience-details" class="form-input" placeholder="ספר לנו על הניסיון הניהולי שלך...">
+          </div>
+        </div>
+
+        <div class="form-group form-group-full">
+          <label for="why-shevach" class="form-label">למה דווקא סניף של שבח מעניין אותך? *</label>
+          <textarea id="why-shevach" name="why-shevach" class="form-input" placeholder="ספר לנו למה אתה מעוניין דווקא בשבח..." rows="3" required="" style="resize: vertical; min-height: 80px;"></textarea>
         </div>
 
         <div class="form-group form-group-full">
           <fieldset class="form-fieldset">
-            <legend class="form-label">תקציב מוערך להשקעה</legend>
+            <legend class="form-label">כמה הון יש לך להשקיע?</legend>
             <div class="radio-group budget-group">
               <label class="radio-option budget-option">
-                <input type="radio" name="budget" value="up-to-200k" class="radio-input">
+                <input type="radio" name="budget" value="150k-200k" class="radio-input">
                 <span class="radio-custom"></span>
                 <span class="radio-text">150,000 - 200,000 ₪</span>
               </label>
               <label class="radio-option budget-option">
-                <input type="radio" name="budget" value="200k-400k" class="radio-input">
+                <input type="radio" name="budget" value="200k-250k" class="radio-input">
                 <span class="radio-custom"></span>
                 <span class="radio-text">200,000 - 250,000 ₪</span>
               </label>
               <label class="radio-option budget-option">
-                <input type="radio" name="budget" value="400k-600k" class="radio-input">
+                <input type="radio" name="budget" value="250k-300k" class="radio-input">
                 <span class="radio-custom"></span>
                 <span class="radio-text">250,000 - 300,000 ₪</span>
               </label>
-
             </div>
           </fieldset>
         </div>
@@ -1510,8 +1517,7 @@ html{box-sizing:border-box;-webkit-text-size-adjust:100%}*,*::before,*::after{bo
             <polyline points="12 5 19 12 12 19"></polyline>
           </svg>
         </button>
-      </div>
-    </form>
+      </div></form>
   </div>
 
   <div class="franchise-form-decoration" aria-hidden="true">
