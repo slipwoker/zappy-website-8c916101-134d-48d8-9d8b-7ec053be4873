@@ -8932,6 +8932,10 @@ html body :root { --border-dark: #4A3030 !important; }
 #ai-section-1783606357569-sxq3a49 {
   display: none !important;
 }
+
+.index-benefits-section .index-benefits-section__divider-wrapper svg path {
+  fill: var(--bg-light) !important;
+}
 /* mobile-submenu-overflow-fix */
 @media (max-width: 768px) {
   .navbar .sub-menu.mobile-expanded,
