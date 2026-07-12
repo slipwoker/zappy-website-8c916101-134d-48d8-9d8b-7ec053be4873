@@ -8940,6 +8940,14 @@ html body :root { --border-dark: #4A3030 !important; }
 .index-benefits-section {
   background-color: var(--surface-color) !important;
 }
+
+.index-benefits-section__container {
+  flex-direction: row-reverse;
+}
+
+.index-benefits-section {
+  border-top: 1px solid var(--border-light);
+}
 /* mobile-submenu-overflow-fix */
 @media (max-width: 768px) {
   .navbar .sub-menu.mobile-expanded,
