@@ -638,7 +638,7 @@ html{box-sizing:border-box;-webkit-text-size-adjust:100%}*,*::before,*::after{bo
       /* Base styles for dropdown submenus - parent must be positioned */
       .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { position: relative; }
       /* Submenu base - hidden by default */
-      .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { display: block !important; position: absolute !important; top: 100%; left: 0; min-width: 220px; background: white; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); padding: 8px 0; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; z-index: 1000; list-style: none; pointer-events: none; }
+      .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { display: block !important; position: absolute !important; top: 100%; left: 0; min-width: 220px; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); padding: 8px 0; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; z-index: 1000; list-style: none; pointer-events: none; }
       /* CRITICAL: Desktop hover styles to show dropdown */
       .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
       /* Submenu item styling */
@@ -1429,6 +1429,103 @@ html{box-sizing:border-box;-webkit-text-size-adjust:100%}*,*::before,*::after{bo
     </div>
   </div>
 </section>
+
+<section class="franchise-form-section" aria-labelledby="franchise-form-heading">
+  <div class="franchise-form-container">
+    <div class="franchise-form-header">
+      <h2 id="franchise-form-heading" class="franchise-form-title">התאמה וסינון מועמדים</h2>
+      <p class="franchise-form-subtitle">מלאו את הפרטים ונחזור אליכם עם כל המידע</p>
+    </div>
+
+    <form class="franchise-form" novalidate="">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="full-name" class="form-label">שם מלא *</label>
+          <input type="text" id="full-name" name="full-name" class="form-input" placeholder="הכנס שם מלא" required="" aria-required="true">
+        </div>
+
+        <div class="form-group">
+          <label for="phone" class="form-label">טלפון *</label>
+          <input type="tel" id="phone" name="phone" class="form-input" placeholder="050-0000000" required="" aria-required="true" dir="ltr">
+        </div>
+
+        <div class="form-group">
+          <label for="email" class="form-label">אימייל *</label>
+          <input type="email" id="email" name="email" class="form-input" placeholder="your@email.com" required="" aria-required="true" dir="ltr">
+        </div>
+
+        <div class="form-group">
+          <label for="location" class="form-label">מהיכן בארץ?</label>
+          <input type="text" id="location" name="location" class="form-input" placeholder="עיר / אזור">
+        </div>
+
+        <div class="form-group form-group-full">
+          <fieldset class="form-fieldset">
+            <legend class="form-label">האם יש לך ניסיון קודם בעסקים / מזון?</legend>
+            <div class="radio-group">
+              <label class="radio-option">
+                <input type="radio" name="experience" value="yes" class="radio-input">
+                <span class="radio-custom"></span>
+                <span class="radio-text">כן</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="experience" value="no" class="radio-input">
+                <span class="radio-custom"></span>
+                <span class="radio-text">לא</span>
+              </label>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="form-group form-group-full">
+          <fieldset class="form-fieldset">
+            <legend class="form-label">תקציב מוערך להשקעה</legend>
+            <div class="radio-group budget-group">
+              <label class="radio-option budget-option">
+                <input type="radio" name="budget" value="up-to-200k" class="radio-input">
+                <span class="radio-custom"></span>
+                <span class="radio-text">עד 200,000 ₪</span>
+              </label>
+              <label class="radio-option budget-option">
+                <input type="radio" name="budget" value="200k-400k" class="radio-input">
+                <span class="radio-custom"></span>
+                <span class="radio-text">200,000 - 400,000 ₪</span>
+              </label>
+              <label class="radio-option budget-option">
+                <input type="radio" name="budget" value="400k-600k" class="radio-input">
+                <span class="radio-custom"></span>
+                <span class="radio-text">400,000 - 600,000 ₪</span>
+              </label>
+              <label class="radio-option budget-option">
+                <input type="radio" name="budget" value="above-600k" class="radio-input">
+                <span class="radio-custom"></span>
+                <span class="radio-text">מעל 600,000 ₪</span>
+              </label>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+
+      <div class="form-submit-wrapper">
+        <button type="submit" class="form-submit-btn">
+          <span class="btn-text">שלחו פרטים ואחזור אליכם</span>
+          <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="franchise-form-decoration" aria-hidden="true">
+    <div class="deco-circle deco-circle-1"></div>
+    <div class="deco-circle deco-circle-2"></div>
+    <div class="deco-dots"></div>
+  </div>
+</section>
+
+
 
 
 
