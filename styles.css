@@ -8924,6 +8924,10 @@ html body :root { --border-dark: #4A3030 !important; }
     padding: 14px 24px;
   }
 }
+
+.site-footer {
+  display: block !important;
+}
 /* mobile-submenu-overflow-fix */
 @media (max-width: 768px) {
   .navbar .sub-menu.mobile-expanded,
