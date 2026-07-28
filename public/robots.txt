@@ -50,4 +50,4 @@ Allow: /
 User-agent: MistralAI-User
 Allow: /
 
-Sitemap: https://shvach-the-father-of-falafel-a.zappy5.app/sitemap.xml
+Sitemap: https://shevach.co.il/sitemap.xml

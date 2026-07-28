@@ -7,25 +7,25 @@
 ## Pages
 
 ### בית
-https://shvach-the-father-of-falafel-a.zappy5.app
+https://shevach.co.il
 מחפשים זכיינות אוכל רווחית עם טעם של הצלחה? הצטרפו לרשת שבח, האבא של הפלאפל והפיצה, ופתחו עמוד בית חם עם מותג ירושלמי חזק. ההזדמנות העסקית שלכם מתחילה כאן — השאירו פרטים עכשיו!
 
 ### תודה שפניתם אלינו | שבח - האבא של הפלאפל והפיצה
-https://shvach-the-father-of-falafel-a.zappy5.app/thank-you
+https://shevach.co.il/thank-you
 שבח - האבא של הפלאפל והפיצה - תודה שפניתם אלינו | שבח - האבא של הפלאפל והפיצה
 
 ## Legal & Policy
 
 ### Privacy Policy
-https://shvach-the-father-of-falafel-a.zappy5.app/privacy
+https://shevach.co.il/privacy
 Information about how user data is collected, stored, and protected.
 
 ### Terms & Conditions
-https://shvach-the-father-of-falafel-a.zappy5.app/terms
+https://shevach.co.il/terms
 Legal terms describing service usage, rights, and policies.
 
 ### Accessibility Statement
-https://shvach-the-father-of-falafel-a.zappy5.app/accessibility
+https://shevach.co.il/accessibility
 Information about WCAG compliance and accessibility features.
 
 ---
@@ -33,8 +33,8 @@ Information about WCAG compliance and accessibility features.
 ## How to Contact Us
 
 - Email: shaigordon99@gmail.com
-- Phone: 026528317
-- Phone (tel): tel:026528317
+- Phone: 0505414955
+- Phone (tel): tel:0505414955
 - Address: בית הכרם 30, Jerusalem, 96633, ישראל
 
 ---
@@ -58,6 +58,6 @@ Food & Beverage
 
 # Machine-readable feeds
 
-- Sitemap (XML): https://shvach-the-father-of-falafel-a.zappy5.app/sitemap.xml
-- Robots: https://shvach-the-father-of-falafel-a.zappy5.app/robots.txt
-- Flattened page text (for LLMs): https://shvach-the-father-of-falafel-a.zappy5.app/llms-full.txt
+- Sitemap (XML): https://shevach.co.il/sitemap.xml
+- Robots: https://shevach.co.il/robots.txt
+- Flattened page text (for LLMs): https://shevach.co.il/llms-full.txt

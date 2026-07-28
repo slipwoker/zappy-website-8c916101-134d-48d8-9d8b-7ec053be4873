@@ -2,13 +2,13 @@
 
 Shevach - 'The Father of Falafel and Pizza' is a bold and confident food brand based in Jerusalem, combining two beloved Israeli staples under one roof. The brand carries a strong, authoritative personality ('the father') suggesting heritage, mastery, and street-food credibility. The franchise opportunity is the core focus of the landing page, targeting entrepreneurs looking to join an established and proudly Israeli food concept.
 
-Source: https://shvach-the-father-of-falafel-a.zappy5.app
+Source: https://shevach.co.il
 
 ---
 
 ## זכיינות לרשת מזון שמשגעת את ישראל — שבח - האבא של הפלאפל והפיצה
 
-URL: https://shvach-the-father-of-falafel-a.zappy5.app
+URL: https://shevach.co.il
 Description: מחפשים זכיינות אוכל רווחית עם טעם של הצלחה? הצטרפו לרשת שבח, האבא של הפלאפל והפיצה, ופתחו עמוד בית חם עם מותג ירושלמי חזק. ההזדמנות העסקית שלכם מתחילה כאן — השאירו פרטים עכשיו!
 
 זכיינות לרשת מזון שמשגעת את ישראל — שבח - האבא של הפלאפל והפיצה
@@ -473,9 +473,10 @@ Description: מחפשים זכיינות אוכל רווחית עם טעם של 
 
 #### שעות פעילות העסק
 
--
-- ימים א–ה 11:00-21:00
-- יום ו 10:30-15:00
+- יום א’ סגור
+
+- ימים ב’–ו’ 09:00–17:00
+
 - שבת סגור
 
 
@@ -516,7 +517,7 @@ Description: מחפשים זכיינות אוכל רווחית עם טעם של 
 
 ## מדיניות פרטיות
 
-URL: https://shvach-the-father-of-falafel-a.zappy5.app/privacy
+URL: https://shevach.co.il/privacy
 Description: מדיניות הפרטיות שלנו - כיצד אנו אוספים, משתמשים ומגנים על המידע שלכם
 
 מדיניות פרטיות
@@ -670,7 +671,7 @@ Description: מדיניות הפרטיות שלנו - כיצד אנו אוספי
 
 - אימייל: shaigordon99@gmail.com
 
-- טלפון: 026528317
+- טלפון: 0505414955
 
 - כתובת: בית הכרם 30, Jerusalem, 96633, ישראל
 
@@ -715,9 +716,10 @@ Description: מדיניות הפרטיות שלנו - כיצד אנו אוספי
 
 #### שעות פעילות העסק
 
--
-- ימים א–ה 11:00-21:00
-- יום ו 10:30-15:00
+- יום א’ סגור
+
+- ימים ב’–ו’ 09:00–17:00
+
 - שבת סגור
 
 
@@ -758,7 +760,7 @@ Description: מדיניות הפרטיות שלנו - כיצד אנו אוספי
 
 ## הצהרת נגישות
 
-URL: https://shvach-the-father-of-falafel-a.zappy5.app/accessibility
+URL: https://shevach.co.il/accessibility
 Description: הצהרת הנגישות שלנו - מחויבותנו לנגישות דיגיטלית
 
 הצהרת נגישות
@@ -920,7 +922,7 @@ Description: הצהרת הנגישות שלנו - מחויבותנו לנגיש�
 
 - אימייל: shaigordon99@gmail.com
 
-- טלפון: 026528317
+- טלפון: 0505414955
 
 
 
@@ -966,9 +968,10 @@ Description: הצהרת הנגישות שלנו - מחויבותנו לנגיש�
 
 #### שעות פעילות העסק
 
--
-- ימים א–ה 11:00-21:00
-- יום ו 10:30-15:00
+- יום א’ סגור
+
+- ימים ב’–ו’ 09:00–17:00
+
 - שבת סגור
 
 
@@ -1009,7 +1012,7 @@ Description: הצהרת הנגישות שלנו - מחויבותנו לנגיש�
 
 ## תנאי שימוש
 
-URL: https://shvach-the-father-of-falafel-a.zappy5.app/terms
+URL: https://shevach.co.il/terms
 Description: תנאי השימוש באתר - הזכויות והחובות של המשתמשים
 
 תנאי שימוש
@@ -1194,7 +1197,7 @@ Description: תנאי השימוש באתר - הזכויות והחובות של
 
 - אימייל: shaigordon99@gmail.com
 
-- טלפון: 026528317
+- טלפון: 0505414955
 
 - כתובת: בית הכרם 30, Jerusalem, 96633, ישראל
 
@@ -1236,9 +1239,10 @@ Description: תנאי השימוש באתר - הזכויות והחובות של
 
 #### שעות פעילות העסק
 
--
-- ימים א–ה 11:00-21:00
-- יום ו 10:30-15:00
+- יום א’ סגור
+
+- ימים ב’–ו’ 09:00–17:00
+
 - שבת סגור
 
 
@@ -1279,7 +1283,7 @@ Description: תנאי השימוש באתר - הזכויות והחובות של
 
 ## תודה שפניתם אלינו | שבח - האבא של הפלאפל והפיצה
 
-URL: https://shvach-the-father-of-falafel-a.zappy5.app/thank-you
+URL: https://shevach.co.il/thank-you
 Description: שבח - האבא של הפלאפל והפיצה - תודה שפניתם אלינו | שבח - האבא של הפלאפל והפיצה
 
 תודה שפניתם אלינו | שבח - האבא של הפלאפל והפיצה
@@ -1418,9 +1422,10 @@ Description: שבח - האבא של הפלאפל והפיצה - תודה שפנ�
 
 #### שעות פעילות העסק
 
--
-- ימים א–ה 11:00-21:00
-- יום ו 10:30-15:00
+- יום א’ סגור
+
+- ימים ב’–ו’ 09:00–17:00
+
 - שבת סגור
 
 
