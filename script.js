@@ -362,6 +362,623 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+/* Accessibility Features */
+
+/* Mickidum Accessibility Toolbar Initialization - Zappy Style */
+
+window.onload = function() {
+    
+    try {
+        // Detect current page language and direction from <html> element
+        // so the toolbar matches the active language on multi-language sites.
+        var htmlEl = document.documentElement;
+        var pageLang = (htmlEl.getAttribute('lang') || 'he').toLowerCase().split('-')[0];
+        var pageDir = (htmlEl.getAttribute('dir') || '').toLowerCase();
+        var rtlLangs = ['he', 'ar', 'fa', 'ur', 'yi', 'iw'];
+        var isPageRTL = pageDir === 'rtl' || rtlLangs.indexOf(pageLang) !== -1;
+        var buttonSide = isPageRTL ? 'left' : 'right';
+
+        var langMap = { en: 'en-US', es: 'es-ES', fr: 'fr-FR', de: 'de-DE', it: 'it-IT', pt: 'pt-PT', nl: 'nl-NL', he: 'he-IL', ar: 'ar-SA' };
+        var forceLang = langMap[pageLang] || 'he-IL';
+
+        var iconPos = { bottom: { size: 50, units: 'px' }, type: 'fixed' };
+        iconPos[buttonSide] = { size: 20, units: 'px' };
+
+        window.micAccessTool = new MicAccessTool({
+            buttonPosition: buttonSide,
+            forceLang: forceLang,
+            icon: {
+                position: iconPos,
+                backgroundColor: 'transparent',
+                color: 'transparent',
+                img: 'accessible',
+                circular: false
+            },
+            menu: {
+                dimensions: {
+                    width: { size: 300, units: 'px' },
+                    height: { size: 'auto', units: 'px' }
+                }
+            }
+        });
+        
+    } catch (error) {
+    }
+    
+    // Keyboard shortcut handler: ALT+A (Option+A on Mac) to toggle accessibility menu
+    document.addEventListener('keydown', function(event) {
+        var isAltOrOption = event.altKey;
+        var isAKey = event.code === 'KeyA' || event.keyCode === 65 || event.which === 65 || 
+                      (event.key && (event.key.toLowerCase() === 'a' || event.key === 'å' || event.key === 'Å'));
+        
+        if (isAltOrOption && isAKey) {
+            event.preventDefault();
+            event.stopPropagation();
+            var accessButton = document.getElementById('mic-access-tool-general-button');
+            if (accessButton) {
+                accessButton.click();
+            }
+        }
+    }, true);
+};
+
+
+// Zappy Contact Form API Integration (Fallback)
+(function() {
+    if (window.zappyContactFormLoaded) {
+        console.log('📧 Zappy contact form already loaded');
+        return;
+    }
+    window.zappyContactFormLoaded = true;
+
+    function zappyNotify(message, type) {
+        var existing = document.querySelectorAll('.zappy-notification');
+        existing.forEach(function(el) { el.remove(); });
+        var el = document.createElement('div');
+        el.className = 'zappy-notification';
+        var bg = type === 'success' ? '#d4edda' : type === 'error' ? '#f8d7da' : '#d1ecf1';
+        var fg = type === 'success' ? '#155724' : type === 'error' ? '#721c24' : '#0c5460';
+        var border = type === 'success' ? '#c3e6cb' : type === 'error' ? '#f5c6cb' : '#bee5eb';
+        var icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+        el.style.cssText = 'position:fixed;top:20px;right:20px;max-width:400px;padding:16px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:10000;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;font-size:14px;line-height:1.4;animation:slideInRight .3s ease-out;background:' + bg + ';color:' + fg + ';border:1px solid ' + border;
+        el.innerHTML = '<span style="margin-right:8px">' + icon + '</span>' + message + '<button onclick="this.parentElement.remove()" style="background:none;border:none;font-size:18px;cursor:pointer;float:right;opacity:.7;padding:0 0 0 12px">&times;</button>';
+        if (!document.getElementById('zappy-notify-anim')) {
+            var s = document.createElement('style');
+            s.id = 'zappy-notify-anim';
+            s.textContent = '@keyframes slideInRight{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}';
+            document.head.appendChild(s);
+        }
+        document.body.appendChild(el);
+        setTimeout(function() { if (el.parentElement) el.remove(); }, type === 'error' ? 8000 : 5000);
+    }
+
+    function initContactFormIntegration() {
+        console.log('📧 Zappy: Initializing contact form API integration...');
+
+        // Exclude newsletter popup form (data-zappy-newsletter / #znl-form /
+        // forms inside .znl-overlay) — they have their own submit handler that
+        // posts to /api/newsletter/public/.../subscribe and must not be hijacked
+        // by the contact-form integration.
+        function isNewsletterPopupForm(f) {
+            if (!f) return false;
+            if (f.hasAttribute && f.hasAttribute('data-zappy-newsletter')) return true;
+            if (f.id === 'znl-form' || (f.classList && f.classList.contains('znl-form'))) return true;
+            if (f.closest && f.closest('.znl-overlay, [data-zappy-newsletter]')) return true;
+            return false;
+        }
+        function pickContactForm() {
+            var candidates = [
+                document.querySelector('.contact-form'),
+                document.querySelector('form[action*="contact"]'),
+                document.querySelector('form#contact'),
+                document.querySelector('form#contactForm'),
+                document.getElementById('contactForm'),
+                document.querySelector('section.contact form'),
+                document.querySelector('section#contact form')
+            ];
+            for (var i = 0; i < candidates.length; i++) {
+                if (candidates[i] && !isNewsletterPopupForm(candidates[i])) return candidates[i];
+            }
+            // Last-resort fallback: first <form> that isn't a newsletter popup form.
+            var all = document.querySelectorAll('form');
+            for (var j = 0; j < all.length; j++) {
+                if (!isNewsletterPopupForm(all[j])) return all[j];
+            }
+            return null;
+        }
+        var contactForm = pickContactForm();
+
+        if (!contactForm) {
+            console.log('⚠️ Zappy: No contact form found on page');
+            return;
+        }
+        
+        console.log('✅ Zappy: Contact form found:', contactForm.className || contactForm.id || 'unnamed form');
+
+    contactForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        // Validate privacy consent checkbox if present (required for GDPR)
+        var privacyCheckbox = this.querySelector('.privacy-consent-checkbox');
+        if (privacyCheckbox && !privacyCheckbox.checked) {
+            zappyNotify('Please accept the Terms & Conditions and Privacy Policy to continue', 'error');
+            privacyCheckbox.focus();
+            return;
+        }
+
+        // Collect form data with multi-value support (checkboxes, multi-selects)
+        var formData = new FormData(this);
+        var data = {};
+        for (var pair of formData.entries()) {
+            if (data[pair[0]] !== undefined) {
+                if (Array.isArray(data[pair[0]])) data[pair[0]].push(pair[1]);
+                else data[pair[0]] = [data[pair[0]], pair[1]];
+            } else {
+                data[pair[0]] = pair[1];
+            }
+        }
+
+        // Smart field mapping
+        var _coreNameFields = ['name','firstName','first_name','fname','lastName','last_name','lname'];
+        var _coreEmailFields = ['email','emailAddress','mail','e-mail'];
+        var _corePhoneFields = ['phone','tel','telephone','mobile','cellphone'];
+        var _coreMsgFields = ['message','msg','comments','comment','description','details','notes','body','text','inquiry'];
+        var _coreSubjectFields = ['subject','topic','regarding','re'];
+        var _allCoreFields = [].concat(_coreNameFields, _coreEmailFields, _corePhoneFields, _coreMsgFields, _coreSubjectFields);
+
+        var resolvedName = (data.name || '').trim()
+            || [data.firstName || data.first_name || data.fname || '', data.lastName || data.last_name || data.lname || ''].filter(Boolean).join(' ').trim()
+            || (data.email || data.emailAddress || data.mail || '').trim()
+            || 'Anonymous';
+        var resolvedEmail = (data.email || data.emailAddress || data.mail || data['e-mail'] || '').trim();
+        var resolvedPhone = data.phone || data.tel || data.telephone || data.mobile || data.cellphone || null;
+        var resolvedSubject = data.subject || data.topic || data.regarding || data.re || 'Contact Form Submission';
+        var resolvedMessage = (data.message || data.msg || data.comments || data.comment || data.description || data.details || data.body || data.text || data.inquiry || '').trim();
+        if (!resolvedMessage) {
+            var extraEntries = Object.entries(data).filter(function(e) { return _allCoreFields.indexOf(e[0]) === -1; });
+            if (extraEntries.length > 0) {
+                resolvedMessage = extraEntries.map(function(e) {
+                    var label = e[0].replace(/([A-Z])/g, ' $1').replace(/[_-]/g, ' ').trim();
+                    var val = Array.isArray(e[1]) ? e[1].join(', ') : e[1];
+                    return label + ': ' + val;
+                }).join('\n');
+            } else {
+                resolvedMessage = 'Form submission from ' + window.location.pathname;
+            }
+        }
+
+        var extraFields = {};
+        for (var k of Object.keys(data)) {
+            if (_allCoreFields.indexOf(k) === -1 && data[k] !== '' && data[k] !== null && data[k] !== undefined) {
+                extraFields[k] = data[k];
+            }
+        }
+
+        // Loading state
+        var submitBtn = this.querySelector('button[type="submit"], input[type="submit"]');
+        var originalText = submitBtn ? (submitBtn.value || submitBtn.textContent) : '';
+        if (submitBtn) {
+            if (submitBtn.tagName === 'INPUT') submitBtn.value = 'Sending...';
+            else submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+        }
+
+        var currentPagePath = window.location.pathname;
+        if (window.ZAPPY_CONFIG && window.ZAPPY_CONFIG.currentPagePath) {
+            currentPagePath = window.ZAPPY_CONFIG.currentPagePath;
+        } else {
+            try {
+                var p = new URLSearchParams(window.location.search).get('page');
+                if (p) currentPagePath = p;
+            } catch (ignored) {}
+        }
+
+        var theForm = this;
+        try {
+            console.log('📧 Zappy: Sending contact form to backend API...');
+            var apiBase = (window.ZAPPY_API_BASE || 'https://api.zappy5.com').replace(/\/$/, '');
+            var payload = {
+                websiteId: '8c916101-134d-48d8-9d8b-7ec053be4873',
+                name: resolvedName,
+                email: resolvedEmail,
+                subject: resolvedSubject,
+                message: resolvedMessage,
+                phone: resolvedPhone,
+                currentPagePath: currentPagePath
+            };
+            if (Object.keys(extraFields).length > 0) {
+                payload.extraFields = extraFields;
+            }
+            var response = await fetch(apiBase + '/api/email/contact-form', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            var result = await response.json();
+            
+            if (result.success) {
+                console.log('✅ Zappy: Contact form data sent successfully to backend');
+
+                // Thank-you page redirect
+                if (result.thankYouPagePath && result.ticketNumber) {
+                    var ticketParam = 'ticket=' + encodeURIComponent(result.ticketNumber);
+                    var isPreview = window.location.pathname.indexOf('/preview') !== -1;
+                    var thankYouUrl;
+                    if (isPreview && window.ZAPPY_CONFIG) {
+                        var wid = window.ZAPPY_CONFIG.websiteId || '8c916101-134d-48d8-9d8b-7ec053be4873';
+                        var pt = window.location.pathname.indexOf('fullscreen') !== -1 ? 'preview-fullscreen' : 'preview';
+                        thankYouUrl = window.location.origin + '/api/website/' + pt + '/' + wid + '?page=' + encodeURIComponent(result.thankYouPagePath) + '&' + ticketParam;
+                        if (window.ZAPPY_CONFIG.authToken) thankYouUrl += '&auth_token=' + encodeURIComponent(window.ZAPPY_CONFIG.authToken);
+                    } else {
+                        thankYouUrl = result.thankYouPagePath + '?' + ticketParam;
+                    }
+                    window.location.href = thankYouUrl;
+                    return;
+                }
+
+                var _siteLang = document.documentElement.lang || '';
+                var _isHeSite = _siteLang === 'he' || (_siteLang !== 'ar' && document.documentElement.dir === 'rtl');
+                var _isArSite = _siteLang === 'ar';
+                var _successFallback = _isHeSite ? 'ההודעה שלך נשלחה בהצלחה! נחזור אליך בהקדם.' : _isArSite ? 'تم إرسال رسالتك بنجاح! سنرد عليك قريبًا.' : 'Thank you for your message! We\'ll get back to you soon.';
+                zappyNotify(result.message || _successFallback, 'success');
+                theForm.reset();
+            } else {
+                console.log('⚠️ Zappy: Backend returned error:', result.error);
+                var _isHeSiteErr = _siteLang === 'he' || (_siteLang !== 'ar' && document.documentElement.dir === 'rtl');
+                var _isArSiteErr = _siteLang === 'ar';
+                var _errFallback = _isHeSiteErr ? 'שליחת ההודעה נכשלה. אנא נסו שוב.' : _isArSiteErr ? 'فشل في إرسال الرسالة. يرجى المحاولة مرة أخرى.' : 'Failed to send message. Please try again.';
+                zappyNotify(result.error || _errFallback, 'error');
+            }
+        } catch (error) {
+            console.error('❌ Zappy: Failed to send to backend API:', error);
+            var _isHeSiteNet = _siteLang === 'he' || (_siteLang !== 'ar' && document.documentElement.dir === 'rtl');
+            var _isArSiteNet = _siteLang === 'ar';
+            var _netFallback = _isHeSiteNet ? 'לא ניתן לשלוח הודעה כרגע. אנא נסו שוב מאוחר יותר.' : _isArSiteNet ? 'لا يمكن إرسال الرسالة الآن. يرجى المحاولة مرة أخرى لاحقًا.' : 'Unable to send message right now. Please try again later.';
+            zappyNotify(_netFallback, 'error');
+        } finally {
+            if (submitBtn) {
+                if (submitBtn.tagName === 'INPUT') submitBtn.value = originalText;
+                else submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+        }, true);
+
+        console.log('✅ Zappy: Contact form API integration initialized');
+    } // End of initContactFormIntegration
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initContactFormIntegration);
+    } else {
+        initContactFormIntegration();
+    }
+})();
+
+/* === NAVBAR SCROLL JS OVERRIDE START === */
+(function(){if(window._zappyNavScrollCleanup){window._zappyNavScrollCleanup();delete window._zappyNavScrollCleanup;}var nb=document.querySelector('nav.navbar,.navbar:not(.zappy-catalog-menu)');var cm=document.querySelector('.zappy-catalog-menu,#zappy-catalog-menu');function clr(){if(nb){nb.style.removeProperty('background');nb.style.removeProperty('background-color');nb.style.removeProperty('backdrop-filter');nb.style.removeProperty('-webkit-backdrop-filter');nb.style.removeProperty('box-shadow');nb.style.removeProperty('--frosted-text');nb.classList.remove('scrolled');}if(cm){cm.style.removeProperty('background');cm.style.removeProperty('background-color');cm.style.removeProperty('backdrop-filter');cm.style.removeProperty('-webkit-backdrop-filter');cm.classList.remove('scrolled');}}clr();window.addEventListener('scroll',clr,{passive:true});window._zappyNavScrollCleanup=function(){window.removeEventListener('scroll',clr);};})();
+/* === NAVBAR SCROLL JS OVERRIDE END === */
+
+
+/* Added Component Script */
+// Optional: Intersection Observer for subtle entrance animation
+document.addEventListener('DOMContentLoaded', function() {
+  const cards = document.querySelectorAll('.feature-card');
+  
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+
+    cards.forEach((card, index) => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(20px)';
+      card.style.transition = `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`;
+      observer.observe(card);
+    });
+  }
+});
+
+/* Added Component Script */
+// No JavaScript required for this static hero section.
+// Buttons use standard anchor links for navigation.
+
+/* Added Component Script */
+/* Optional: Add intersection observer for animation if needed */
+document.addEventListener('DOMContentLoaded', function() {
+  const cards = document.querySelectorAll('.sbh-explanation-card[data-aos]');
+  
+  if ('IntersectionObserver' in window) {
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -40px 0px',
+      threshold: 0.15
+    };
+    
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+    
+    cards.forEach(function(card) {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(30px)';
+      card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(card);
+    });
+  } else {
+    cards.forEach(function(card) {
+      card.style.opacity = '1';
+      card.style.transform = 'translateY(0)';
+    });
+  }
+});
+
+/* Added Component Script */
+// No JavaScript required for this static footer bar.
+
+/* Added Component Script */
+(function() {
+  const section = document.querySelector('.shb-delete-section');
+  if (!section) return;
+
+  const cancelBtn = section.querySelector('.shb-delete-btn-cancel');
+  const confirmBtn = section.querySelector('.shb-delete-btn-confirm');
+
+  cancelBtn.addEventListener('click', function() {
+    // Placeholder: handle cancel — could navigate back or close modal
+    console.log('מחיקת מקטע בוטלה');
+    // Example: section.style.display = 'none'; or trigger a custom event
+  });
+
+  confirmBtn.addEventListener('click', function() {
+    // Placeholder: handle deletion logic
+    if (confirm('האם אתה בטוח לחלוטין? פעולה זו אינה הפיכה.')) {
+      console.log('מקטע נמחק');
+      // section.remove(); or dispatch custom event
+    }
+  });
+})();
+
+/* Added Component Script */
+(function() {
+    const confirmBtn = document.querySelector('.delete-btn-confirm');
+    const cancelBtn = document.querySelector('.delete-btn-cancel');
+    const deleteSection = document.querySelector('.delete-section');
+
+    function handleDelete() {
+      if (deleteSection) {
+        deleteSection.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+        deleteSection.style.opacity = '0';
+        deleteSection.style.transform = 'scale(0.96)';
+        setTimeout(() => {
+          deleteSection.remove();
+        }, 350);
+      }
+    }
+
+    function handleCancel() {
+      if (deleteSection) {
+        deleteSection.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        deleteSection.style.opacity = '0';
+        deleteSection.style.transform = 'scale(0.98)';
+        setTimeout(() => {
+          deleteSection.remove();
+        }, 300);
+      }
+    }
+
+    if (confirmBtn) {
+      confirmBtn.addEventListener('click', handleDelete);
+    }
+
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', handleCancel);
+    }
+  })();
+
+/* Added Component Script */
+/* Optional: Add confirmation dialog interaction */
+document.addEventListener('DOMContentLoaded', function() {
+  const confirmBtn = document.querySelector('.shb-delete-btn-confirm');
+  const cancelBtn = document.querySelector('.shb-delete-btn-cancel');
+
+  if (confirmBtn) {
+    confirmBtn.addEventListener('click', function() {
+      // Placeholder for delete action
+      console.log('Section deletion confirmed');
+      // Add your actual delete logic here
+    });
+  }
+
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', function() {
+      // Placeholder for cancel action
+      console.log('Section deletion cancelled');
+      // Add your actual cancel logic here
+    });
+  }
+});
+
+/* Added Component Script */
+/* Optional: Intersection Observer for scroll-triggered animations */
+document.addEventListener('DOMContentLoaded', function() {
+  const cards = document.querySelectorAll('.team-card');
+  
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    cards.forEach((card, index) => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(30px)';
+      card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      card.style.transitionDelay = (index * 0.1) + 's';
+      observer.observe(card);
+    });
+  }
+});
+
+/* Added Component Script */
+/* Optional: subtle count-up animation for stats when they scroll into view */
+document.addEventListener('DOMContentLoaded', function() {
+  const statsSection = document.querySelector('.taste-revolution__stats');
+  if (!statsSection) return;
+
+  const statNumbers = statsSection.querySelectorAll('.taste-revolution__stat-number');
+  let animated = false;
+
+  function animateStats() {
+    if (animated) return;
+    const rect = statsSection.getBoundingClientRect();
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+
+    if (rect.top <= windowHeight * 0.85 && rect.bottom >= 0) {
+      animated = true;
+      statNumbers.forEach(function(el) {
+        const text = el.textContent.trim();
+        const hasPlus = text.includes('+');
+        const hasPercent = text.includes('%');
+        const numericPart = parseInt(text.replace(/[^0-9]/g, ''), 10);
+        if (isNaN(numericPart)) return;
+
+        const suffix = hasPlus ? '+' : (hasPercent ? '%' : '');
+        const duration = 1800;
+        const startTime = performance.now();
+
+        function update(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = Math.floor(eased * numericPart);
+          el.textContent = current.toLocaleString() + suffix;
+          if (progress < 1) {
+            requestAnimationFrame(update);
+          } else {
+            el.textContent = numericPart.toLocaleString() + suffix;
+          }
+        }
+
+        requestAnimationFrame(update);
+      });
+    }
+  }
+
+  window.addEventListener('scroll', animateStats, { passive: true });
+  animateStats();
+});
+
+/* Added Component Script */
+(function() {
+    const form = document.querySelector('.franchise-filter-section .filter-form');
+    const textarea = document.querySelector('.franchise-filter-section .filter-textarea');
+    const charCounter = document.querySelector('.franchise-filter-section .char-counter');
+
+    // Character counter
+    if (textarea && charCounter) {
+      textarea.addEventListener('input', function() {
+        const len = this.value.length;
+        charCounter.textContent = len + '/500';
+        if (len > 450) {
+          charCounter.style.color = 'var(--primary-color, #CC3333)';
+        } else {
+          charCounter.style.color = 'var(--text-secondary-color, #666666)';
+        }
+      });
+    }
+
+    // Form validation and submission
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const requiredRadios = form.querySelectorAll('input[type="radio"][required]');
+        const groups = {};
+        let allValid = true;
+
+        requiredRadios.forEach(radio => {
+          if (!groups[radio.name]) {
+            groups[radio.name] = false;
+          }
+          if (radio.checked) {
+            groups[radio.name] = true;
+          }
+        });
+
+        for (const [name, checked] of Object.entries(groups)) {
+          if (!checked) {
+            allValid = false;
+            const fieldset = form.querySelector(`input[name="${name}"]`).closest('.filter-fieldset');
+            if (fieldset) {
+              fieldset.style.animation = 'none';
+              fieldset.offsetHeight;
+              fieldset.style.animation = 'shake 0.5s ease';
+              fieldset.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            break;
+          }
+        }
+
+        if (!textarea.value.trim()) {
+          allValid = false;
+          textarea.style.animation = 'none';
+          textarea.offsetHeight;
+          textarea.style.animation = 'shake 0.5s ease';
+          textarea.focus();
+        }
+
+        if (allValid) {
+          const submitBtn = form.querySelector('.submit-btn');
+          const originalText = submitBtn.innerHTML;
+          submitBtn.innerHTML = '<span>נשלח! נחזור אליכם בהקדם</span>';
+          submitBtn.style.background = '#2E7D32';
+          submitBtn.disabled = true;
+
+          setTimeout(() => {
+            submitBtn.innerHTML = originalText;
+            submitBtn.style.background = '';
+            submitBtn.disabled = false;
+            form.reset();
+            if (charCounter) charCounter.textContent = '0/500';
+          }, 3000);
+        }
+      });
+    }
+
+    // Add shake animation
+    const styleEl = document.createElement('style');
+    styleEl.textContent = `
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        20% { transform: translateX(-8px); }
+        40% { transform: translateX(8px); }
+        60% { transform: translateX(-6px); }
+        80% { transform: translateX(4px); }
+      }
+    `;
+    document.head.appendChild(styleEl);
+  })();
+
 /* Cookie Consent */
 
 // Helper function to check cookie consent
@@ -389,13 +1006,67 @@ function withConsent(category, callback) {
   
   var initAttempts = 0;
   var maxAttempts = 50;
-  
+  var cookieConsentScriptSrc = 'https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.umd.js';
+  var cookieConsentLoadPromise = null;
+
+  function loadCookieConsentLibrary() {
+    if (typeof window.CookieConsent !== 'undefined') {
+      return Promise.resolve(window.CookieConsent);
+    }
+    if (cookieConsentLoadPromise) {
+      return cookieConsentLoadPromise;
+    }
+    cookieConsentLoadPromise = new Promise(function(resolve, reject) {
+      var existing = document.querySelector('script[data-zappy-cookie-consent="true"]');
+      if (existing) {
+        // A previously failed/already-complete tag never fires load again.
+        if (existing.getAttribute('data-zappy-load-error') === 'true') {
+          existing.parentNode && existing.parentNode.removeChild(existing);
+        } else if (existing.getAttribute('data-zappy-loaded') === 'true' || existing.readyState === 'complete') {
+          resolve(window.CookieConsent);
+          return;
+        } else {
+          existing.addEventListener('load', function() {
+            existing.setAttribute('data-zappy-loaded', 'true');
+            resolve(window.CookieConsent);
+          }, { once: true });
+          existing.addEventListener('error', function(error) {
+            existing.setAttribute('data-zappy-load-error', 'true');
+            reject(error);
+          }, { once: true });
+          return;
+        }
+      }
+      var script = document.createElement('script');
+      script.src = cookieConsentScriptSrc;
+      script.async = true;
+      script.defer = true;
+      script.setAttribute('data-zappy-cookie-consent', 'true');
+      script.onload = function() {
+        script.setAttribute('data-zappy-loaded', 'true');
+        resolve(window.CookieConsent);
+      };
+      script.onerror = function(error) {
+        script.setAttribute('data-zappy-load-error', 'true');
+        reject(error);
+      };
+      document.head.appendChild(script);
+    }).catch(function() {
+      cookieConsentLoadPromise = null;
+    });
+    return cookieConsentLoadPromise;
+  }
+
   function initCookieConsent() {
     initAttempts++;
-    
+
     if (typeof window.CookieConsent === 'undefined') {
       if (initAttempts < maxAttempts) {
-        setTimeout(initCookieConsent, 100);
+        // Keep the previous backoff so we wait for the UMD global to attach
+        // after the script load event, instead of exhausting attempts immediately.
+        setTimeout(function() {
+          loadCookieConsentLibrary().then(initCookieConsent);
+        }, 100);
       }
       return;
     }
@@ -1238,638 +1909,25 @@ function withConsent(category, callback) {
     }
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initCookieConsent);
-    setTimeout(initCookieConsent, 1000);
-  } else if (document.readyState === 'interactive' || document.readyState === 'complete') {
-    initCookieConsent();
-  } else {
-    setTimeout(initCookieConsent, 500);
-  }
-  
-  if (typeof window !== 'undefined') {
-    if (window.addEventListener) {
-      window.addEventListener('load', initCookieConsent, { once: true });
-    }
-  }
-})();
-
-/* Accessibility Features */
-
-/* Mickidum Accessibility Toolbar Initialization - Zappy Style */
-
-window.onload = function() {
-    
-    try {
-        // Detect current page language and direction from <html> element
-        // so the toolbar matches the active language on multi-language sites.
-        var htmlEl = document.documentElement;
-        var pageLang = (htmlEl.getAttribute('lang') || 'he').toLowerCase().split('-')[0];
-        var pageDir = (htmlEl.getAttribute('dir') || '').toLowerCase();
-        var rtlLangs = ['he', 'ar', 'fa', 'ur', 'yi', 'iw'];
-        var isPageRTL = pageDir === 'rtl' || rtlLangs.indexOf(pageLang) !== -1;
-        var buttonSide = isPageRTL ? 'left' : 'right';
-
-        var langMap = { en: 'en-US', es: 'es-ES', fr: 'fr-FR', de: 'de-DE', it: 'it-IT', pt: 'pt-PT', nl: 'nl-NL', he: 'he-IL', ar: 'ar-SA' };
-        var forceLang = langMap[pageLang] || 'he-IL';
-
-        var iconPos = { bottom: { size: 50, units: 'px' }, type: 'fixed' };
-        iconPos[buttonSide] = { size: 20, units: 'px' };
-
-        window.micAccessTool = new MicAccessTool({
-            buttonPosition: buttonSide,
-            forceLang: forceLang,
-            icon: {
-                position: iconPos,
-                backgroundColor: 'transparent',
-                color: 'transparent',
-                img: 'accessible',
-                circular: false
-            },
-            menu: {
-                dimensions: {
-                    width: { size: 300, units: 'px' },
-                    height: { size: 'auto', units: 'px' }
-                }
-            }
-        });
-        
-    } catch (error) {
-    }
-    
-    // Keyboard shortcut handler: ALT+A (Option+A on Mac) to toggle accessibility menu
-    document.addEventListener('keydown', function(event) {
-        var isAltOrOption = event.altKey;
-        var isAKey = event.code === 'KeyA' || event.keyCode === 65 || event.which === 65 || 
-                      (event.key && (event.key.toLowerCase() === 'a' || event.key === 'å' || event.key === 'Å'));
-        
-        if (isAltOrOption && isAKey) {
-            event.preventDefault();
-            event.stopPropagation();
-            var accessButton = document.getElementById('mic-access-tool-general-button');
-            if (accessButton) {
-                accessButton.click();
-            }
-        }
-    }, true);
-};
-
-
-// Zappy Contact Form API Integration (Fallback)
-(function() {
-    if (window.zappyContactFormLoaded) {
-        console.log('📧 Zappy contact form already loaded');
-        return;
-    }
-    window.zappyContactFormLoaded = true;
-
-    function zappyNotify(message, type) {
-        var existing = document.querySelectorAll('.zappy-notification');
-        existing.forEach(function(el) { el.remove(); });
-        var el = document.createElement('div');
-        el.className = 'zappy-notification';
-        var bg = type === 'success' ? '#d4edda' : type === 'error' ? '#f8d7da' : '#d1ecf1';
-        var fg = type === 'success' ? '#155724' : type === 'error' ? '#721c24' : '#0c5460';
-        var border = type === 'success' ? '#c3e6cb' : type === 'error' ? '#f5c6cb' : '#bee5eb';
-        var icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
-        el.style.cssText = 'position:fixed;top:20px;right:20px;max-width:400px;padding:16px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:10000;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;font-size:14px;line-height:1.4;animation:slideInRight .3s ease-out;background:' + bg + ';color:' + fg + ';border:1px solid ' + border;
-        el.innerHTML = '<span style="margin-right:8px">' + icon + '</span>' + message + '<button onclick="this.parentElement.remove()" style="background:none;border:none;font-size:18px;cursor:pointer;float:right;opacity:.7;padding:0 0 0 12px">&times;</button>';
-        if (!document.getElementById('zappy-notify-anim')) {
-            var s = document.createElement('style');
-            s.id = 'zappy-notify-anim';
-            s.textContent = '@keyframes slideInRight{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}';
-            document.head.appendChild(s);
-        }
-        document.body.appendChild(el);
-        setTimeout(function() { if (el.parentElement) el.remove(); }, type === 'error' ? 8000 : 5000);
-    }
-
-    function initContactFormIntegration() {
-        console.log('📧 Zappy: Initializing contact form API integration...');
-
-        // Exclude newsletter popup form (data-zappy-newsletter / #znl-form /
-        // forms inside .znl-overlay) — they have their own submit handler that
-        // posts to /api/newsletter/public/.../subscribe and must not be hijacked
-        // by the contact-form integration.
-        function isNewsletterPopupForm(f) {
-            if (!f) return false;
-            if (f.hasAttribute && f.hasAttribute('data-zappy-newsletter')) return true;
-            if (f.id === 'znl-form' || (f.classList && f.classList.contains('znl-form'))) return true;
-            if (f.closest && f.closest('.znl-overlay, [data-zappy-newsletter]')) return true;
-            return false;
-        }
-        function pickContactForm() {
-            var candidates = [
-                document.querySelector('.contact-form'),
-                document.querySelector('form[action*="contact"]'),
-                document.querySelector('form#contact'),
-                document.querySelector('form#contactForm'),
-                document.getElementById('contactForm'),
-                document.querySelector('section.contact form'),
-                document.querySelector('section#contact form')
-            ];
-            for (var i = 0; i < candidates.length; i++) {
-                if (candidates[i] && !isNewsletterPopupForm(candidates[i])) return candidates[i];
-            }
-            // Last-resort fallback: first <form> that isn't a newsletter popup form.
-            var all = document.querySelectorAll('form');
-            for (var j = 0; j < all.length; j++) {
-                if (!isNewsletterPopupForm(all[j])) return all[j];
-            }
-            return null;
-        }
-        var contactForm = pickContactForm();
-
-        if (!contactForm) {
-            console.log('⚠️ Zappy: No contact form found on page');
-            return;
-        }
-        
-        console.log('✅ Zappy: Contact form found:', contactForm.className || contactForm.id || 'unnamed form');
-
-    contactForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-
-        // Validate privacy consent checkbox if present (required for GDPR)
-        var privacyCheckbox = this.querySelector('.privacy-consent-checkbox');
-        if (privacyCheckbox && !privacyCheckbox.checked) {
-            zappyNotify('Please accept the Terms & Conditions and Privacy Policy to continue', 'error');
-            privacyCheckbox.focus();
-            return;
-        }
-
-        // Collect form data with multi-value support (checkboxes, multi-selects)
-        var formData = new FormData(this);
-        var data = {};
-        for (var pair of formData.entries()) {
-            if (data[pair[0]] !== undefined) {
-                if (Array.isArray(data[pair[0]])) data[pair[0]].push(pair[1]);
-                else data[pair[0]] = [data[pair[0]], pair[1]];
-            } else {
-                data[pair[0]] = pair[1];
-            }
-        }
-
-        // Smart field mapping
-        var _coreNameFields = ['name','firstName','first_name','fname','lastName','last_name','lname'];
-        var _coreEmailFields = ['email','emailAddress','mail','e-mail'];
-        var _corePhoneFields = ['phone','tel','telephone','mobile','cellphone'];
-        var _coreMsgFields = ['message','msg','comments','comment','description','details','notes','body','text','inquiry'];
-        var _coreSubjectFields = ['subject','topic','regarding','re'];
-        var _allCoreFields = [].concat(_coreNameFields, _coreEmailFields, _corePhoneFields, _coreMsgFields, _coreSubjectFields);
-
-        var resolvedName = (data.name || '').trim()
-            || [data.firstName || data.first_name || data.fname || '', data.lastName || data.last_name || data.lname || ''].filter(Boolean).join(' ').trim()
-            || (data.email || data.emailAddress || data.mail || '').trim()
-            || 'Anonymous';
-        var resolvedEmail = (data.email || data.emailAddress || data.mail || data['e-mail'] || '').trim();
-        var resolvedPhone = data.phone || data.tel || data.telephone || data.mobile || data.cellphone || null;
-        var resolvedSubject = data.subject || data.topic || data.regarding || data.re || 'Contact Form Submission';
-        var resolvedMessage = (data.message || data.msg || data.comments || data.comment || data.description || data.details || data.body || data.text || data.inquiry || '').trim();
-        if (!resolvedMessage) {
-            var extraEntries = Object.entries(data).filter(function(e) { return _allCoreFields.indexOf(e[0]) === -1; });
-            if (extraEntries.length > 0) {
-                resolvedMessage = extraEntries.map(function(e) {
-                    var label = e[0].replace(/([A-Z])/g, ' $1').replace(/[_-]/g, ' ').trim();
-                    var val = Array.isArray(e[1]) ? e[1].join(', ') : e[1];
-                    return label + ': ' + val;
-                }).join('\n');
-            } else {
-                resolvedMessage = 'Form submission from ' + window.location.pathname;
-            }
-        }
-
-        var extraFields = {};
-        for (var k of Object.keys(data)) {
-            if (_allCoreFields.indexOf(k) === -1 && data[k] !== '' && data[k] !== null && data[k] !== undefined) {
-                extraFields[k] = data[k];
-            }
-        }
-
-        // Loading state
-        var submitBtn = this.querySelector('button[type="submit"], input[type="submit"]');
-        var originalText = submitBtn ? (submitBtn.value || submitBtn.textContent) : '';
-        if (submitBtn) {
-            if (submitBtn.tagName === 'INPUT') submitBtn.value = 'Sending...';
-            else submitBtn.textContent = 'Sending...';
-            submitBtn.disabled = true;
-        }
-
-        var currentPagePath = window.location.pathname;
-        if (window.ZAPPY_CONFIG && window.ZAPPY_CONFIG.currentPagePath) {
-            currentPagePath = window.ZAPPY_CONFIG.currentPagePath;
-        } else {
-            try {
-                var p = new URLSearchParams(window.location.search).get('page');
-                if (p) currentPagePath = p;
-            } catch (ignored) {}
-        }
-
-        var theForm = this;
-        try {
-            console.log('📧 Zappy: Sending contact form to backend API...');
-            var apiBase = (window.ZAPPY_API_BASE || 'https://api.zappy5.com').replace(/\/$/, '');
-            var payload = {
-                websiteId: '8c916101-134d-48d8-9d8b-7ec053be4873',
-                name: resolvedName,
-                email: resolvedEmail,
-                subject: resolvedSubject,
-                message: resolvedMessage,
-                phone: resolvedPhone,
-                currentPagePath: currentPagePath
-            };
-            if (Object.keys(extraFields).length > 0) {
-                payload.extraFields = extraFields;
-            }
-            var response = await fetch(apiBase + '/api/email/contact-form', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-
-            var result = await response.json();
-            
-            if (result.success) {
-                console.log('✅ Zappy: Contact form data sent successfully to backend');
-
-                // Thank-you page redirect
-                if (result.thankYouPagePath && result.ticketNumber) {
-                    var ticketParam = 'ticket=' + encodeURIComponent(result.ticketNumber);
-                    var isPreview = window.location.pathname.indexOf('/preview') !== -1;
-                    var thankYouUrl;
-                    if (isPreview && window.ZAPPY_CONFIG) {
-                        var wid = window.ZAPPY_CONFIG.websiteId || '8c916101-134d-48d8-9d8b-7ec053be4873';
-                        var pt = window.location.pathname.indexOf('fullscreen') !== -1 ? 'preview-fullscreen' : 'preview';
-                        thankYouUrl = window.location.origin + '/api/website/' + pt + '/' + wid + '?page=' + encodeURIComponent(result.thankYouPagePath) + '&' + ticketParam;
-                        if (window.ZAPPY_CONFIG.authToken) thankYouUrl += '&auth_token=' + encodeURIComponent(window.ZAPPY_CONFIG.authToken);
-                    } else {
-                        thankYouUrl = result.thankYouPagePath + '?' + ticketParam;
-                    }
-                    window.location.href = thankYouUrl;
-                    return;
-                }
-
-                var _siteLang = document.documentElement.lang || '';
-                var _isHeSite = _siteLang === 'he' || (_siteLang !== 'ar' && document.documentElement.dir === 'rtl');
-                var _isArSite = _siteLang === 'ar';
-                var _successFallback = _isHeSite ? 'ההודעה שלך נשלחה בהצלחה! נחזור אליך בהקדם.' : _isArSite ? 'تم إرسال رسالتك بنجاح! سنرد عليك قريبًا.' : 'Thank you for your message! We\'ll get back to you soon.';
-                zappyNotify(result.message || _successFallback, 'success');
-                theForm.reset();
-            } else {
-                console.log('⚠️ Zappy: Backend returned error:', result.error);
-                var _isHeSiteErr = _siteLang === 'he' || (_siteLang !== 'ar' && document.documentElement.dir === 'rtl');
-                var _isArSiteErr = _siteLang === 'ar';
-                var _errFallback = _isHeSiteErr ? 'שליחת ההודעה נכשלה. אנא נסו שוב.' : _isArSiteErr ? 'فشل في إرسال الرسالة. يرجى المحاولة مرة أخرى.' : 'Failed to send message. Please try again.';
-                zappyNotify(result.error || _errFallback, 'error');
-            }
-        } catch (error) {
-            console.error('❌ Zappy: Failed to send to backend API:', error);
-            var _isHeSiteNet = _siteLang === 'he' || (_siteLang !== 'ar' && document.documentElement.dir === 'rtl');
-            var _isArSiteNet = _siteLang === 'ar';
-            var _netFallback = _isHeSiteNet ? 'לא ניתן לשלוח הודעה כרגע. אנא נסו שוב מאוחר יותר.' : _isArSiteNet ? 'لا يمكن إرسال الرسالة الآن. يرجى المحاولة مرة أخرى لاحقًا.' : 'Unable to send message right now. Please try again later.';
-            zappyNotify(_netFallback, 'error');
-        } finally {
-            if (submitBtn) {
-                if (submitBtn.tagName === 'INPUT') submitBtn.value = originalText;
-                else submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            }
-        }
-        }, true);
-
-        console.log('✅ Zappy: Contact form API integration initialized');
-    } // End of initContactFormIntegration
-    
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initContactFormIntegration);
-    } else {
-        initContactFormIntegration();
-    }
-})();
-
-/* === NAVBAR SCROLL JS OVERRIDE START === */
-(function(){if(window._zappyNavScrollCleanup){window._zappyNavScrollCleanup();delete window._zappyNavScrollCleanup;}var nb=document.querySelector('nav.navbar,.navbar:not(.zappy-catalog-menu)');var cm=document.querySelector('.zappy-catalog-menu,#zappy-catalog-menu');function clr(){if(nb){nb.style.removeProperty('background');nb.style.removeProperty('background-color');nb.style.removeProperty('backdrop-filter');nb.style.removeProperty('-webkit-backdrop-filter');nb.style.removeProperty('box-shadow');nb.style.removeProperty('--frosted-text');nb.classList.remove('scrolled');}if(cm){cm.style.removeProperty('background');cm.style.removeProperty('background-color');cm.style.removeProperty('backdrop-filter');cm.style.removeProperty('-webkit-backdrop-filter');cm.classList.remove('scrolled');}}clr();window.addEventListener('scroll',clr,{passive:true});window._zappyNavScrollCleanup=function(){window.removeEventListener('scroll',clr);};})();
-/* === NAVBAR SCROLL JS OVERRIDE END === */
-
-
-/* Added Component Script */
-// Optional: Intersection Observer for subtle entrance animation
-document.addEventListener('DOMContentLoaded', function() {
-  const cards = document.querySelectorAll('.feature-card');
-  
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-        }
-      });
-    }, {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    });
-
-    cards.forEach((card, index) => {
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(20px)';
-      card.style.transition = `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`;
-      observer.observe(card);
-    });
-  }
-});
-
-/* Added Component Script */
-// No JavaScript required for this static hero section.
-// Buttons use standard anchor links for navigation.
-
-/* Added Component Script */
-/* Optional: Add intersection observer for animation if needed */
-document.addEventListener('DOMContentLoaded', function() {
-  const cards = document.querySelectorAll('.sbh-explanation-card[data-aos]');
-  
-  if ('IntersectionObserver' in window) {
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px 0px -40px 0px',
-      threshold: 0.15
+  function scheduleCookieConsentLoad() {
+    var start = function() {
+      loadCookieConsentLibrary().then(initCookieConsent);
     };
-    
-    const observer = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-          observer.unobserve(entry.target);
-        }
-      });
-    }, observerOptions);
-    
-    cards.forEach(function(card) {
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(30px)';
-      card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-      observer.observe(card);
-    });
+    if (typeof window.requestIdleCallback === 'function') {
+      window.requestIdleCallback(start, { timeout: 7000 });
+    } else {
+      setTimeout(start, 7000);
+    }
+  }
+
+  if (document.readyState === 'complete') {
+    scheduleCookieConsentLoad();
+  } else if (typeof window !== 'undefined' && window.addEventListener) {
+    window.addEventListener('load', scheduleCookieConsentLoad, { once: true });
   } else {
-    cards.forEach(function(card) {
-      card.style.opacity = '1';
-      card.style.transform = 'translateY(0)';
-    });
+    setTimeout(scheduleCookieConsentLoad, 1000);
   }
-});
-
-/* Added Component Script */
-// No JavaScript required for this static footer bar.
-
-/* Added Component Script */
-(function() {
-  const section = document.querySelector('.shb-delete-section');
-  if (!section) return;
-
-  const cancelBtn = section.querySelector('.shb-delete-btn-cancel');
-  const confirmBtn = section.querySelector('.shb-delete-btn-confirm');
-
-  cancelBtn.addEventListener('click', function() {
-    // Placeholder: handle cancel — could navigate back or close modal
-    console.log('מחיקת מקטע בוטלה');
-    // Example: section.style.display = 'none'; or trigger a custom event
-  });
-
-  confirmBtn.addEventListener('click', function() {
-    // Placeholder: handle deletion logic
-    if (confirm('האם אתה בטוח לחלוטין? פעולה זו אינה הפיכה.')) {
-      console.log('מקטע נמחק');
-      // section.remove(); or dispatch custom event
-    }
-  });
 })();
-
-/* Added Component Script */
-(function() {
-    const confirmBtn = document.querySelector('.delete-btn-confirm');
-    const cancelBtn = document.querySelector('.delete-btn-cancel');
-    const deleteSection = document.querySelector('.delete-section');
-
-    function handleDelete() {
-      if (deleteSection) {
-        deleteSection.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
-        deleteSection.style.opacity = '0';
-        deleteSection.style.transform = 'scale(0.96)';
-        setTimeout(() => {
-          deleteSection.remove();
-        }, 350);
-      }
-    }
-
-    function handleCancel() {
-      if (deleteSection) {
-        deleteSection.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-        deleteSection.style.opacity = '0';
-        deleteSection.style.transform = 'scale(0.98)';
-        setTimeout(() => {
-          deleteSection.remove();
-        }, 300);
-      }
-    }
-
-    if (confirmBtn) {
-      confirmBtn.addEventListener('click', handleDelete);
-    }
-
-    if (cancelBtn) {
-      cancelBtn.addEventListener('click', handleCancel);
-    }
-  })();
-
-/* Added Component Script */
-/* Optional: Add confirmation dialog interaction */
-document.addEventListener('DOMContentLoaded', function() {
-  const confirmBtn = document.querySelector('.shb-delete-btn-confirm');
-  const cancelBtn = document.querySelector('.shb-delete-btn-cancel');
-
-  if (confirmBtn) {
-    confirmBtn.addEventListener('click', function() {
-      // Placeholder for delete action
-      console.log('Section deletion confirmed');
-      // Add your actual delete logic here
-    });
-  }
-
-  if (cancelBtn) {
-    cancelBtn.addEventListener('click', function() {
-      // Placeholder for cancel action
-      console.log('Section deletion cancelled');
-      // Add your actual cancel logic here
-    });
-  }
-});
-
-/* Added Component Script */
-/* Optional: Intersection Observer for scroll-triggered animations */
-document.addEventListener('DOMContentLoaded', function() {
-  const cards = document.querySelectorAll('.team-card');
-  
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-
-    cards.forEach((card, index) => {
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(30px)';
-      card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-      card.style.transitionDelay = (index * 0.1) + 's';
-      observer.observe(card);
-    });
-  }
-});
-
-/* Added Component Script */
-/* Optional: subtle count-up animation for stats when they scroll into view */
-document.addEventListener('DOMContentLoaded', function() {
-  const statsSection = document.querySelector('.taste-revolution__stats');
-  if (!statsSection) return;
-
-  const statNumbers = statsSection.querySelectorAll('.taste-revolution__stat-number');
-  let animated = false;
-
-  function animateStats() {
-    if (animated) return;
-    const rect = statsSection.getBoundingClientRect();
-    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-
-    if (rect.top <= windowHeight * 0.85 && rect.bottom >= 0) {
-      animated = true;
-      statNumbers.forEach(function(el) {
-        const text = el.textContent.trim();
-        const hasPlus = text.includes('+');
-        const hasPercent = text.includes('%');
-        const numericPart = parseInt(text.replace(/[^0-9]/g, ''), 10);
-        if (isNaN(numericPart)) return;
-
-        const suffix = hasPlus ? '+' : (hasPercent ? '%' : '');
-        const duration = 1800;
-        const startTime = performance.now();
-
-        function update(currentTime) {
-          const elapsed = currentTime - startTime;
-          const progress = Math.min(elapsed / duration, 1);
-          const eased = 1 - Math.pow(1 - progress, 3);
-          const current = Math.floor(eased * numericPart);
-          el.textContent = current.toLocaleString() + suffix;
-          if (progress < 1) {
-            requestAnimationFrame(update);
-          } else {
-            el.textContent = numericPart.toLocaleString() + suffix;
-          }
-        }
-
-        requestAnimationFrame(update);
-      });
-    }
-  }
-
-  window.addEventListener('scroll', animateStats, { passive: true });
-  animateStats();
-});
-
-/* Added Component Script */
-(function() {
-    const form = document.querySelector('.franchise-filter-section .filter-form');
-    const textarea = document.querySelector('.franchise-filter-section .filter-textarea');
-    const charCounter = document.querySelector('.franchise-filter-section .char-counter');
-
-    // Character counter
-    if (textarea && charCounter) {
-      textarea.addEventListener('input', function() {
-        const len = this.value.length;
-        charCounter.textContent = len + '/500';
-        if (len > 450) {
-          charCounter.style.color = 'var(--primary-color, #CC3333)';
-        } else {
-          charCounter.style.color = 'var(--text-secondary-color, #666666)';
-        }
-      });
-    }
-
-    // Form validation and submission
-    if (form) {
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const requiredRadios = form.querySelectorAll('input[type="radio"][required]');
-        const groups = {};
-        let allValid = true;
-
-        requiredRadios.forEach(radio => {
-          if (!groups[radio.name]) {
-            groups[radio.name] = false;
-          }
-          if (radio.checked) {
-            groups[radio.name] = true;
-          }
-        });
-
-        for (const [name, checked] of Object.entries(groups)) {
-          if (!checked) {
-            allValid = false;
-            const fieldset = form.querySelector(`input[name="${name}"]`).closest('.filter-fieldset');
-            if (fieldset) {
-              fieldset.style.animation = 'none';
-              fieldset.offsetHeight;
-              fieldset.style.animation = 'shake 0.5s ease';
-              fieldset.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-            break;
-          }
-        }
-
-        if (!textarea.value.trim()) {
-          allValid = false;
-          textarea.style.animation = 'none';
-          textarea.offsetHeight;
-          textarea.style.animation = 'shake 0.5s ease';
-          textarea.focus();
-        }
-
-        if (allValid) {
-          const submitBtn = form.querySelector('.submit-btn');
-          const originalText = submitBtn.innerHTML;
-          submitBtn.innerHTML = '<span>נשלח! נחזור אליכם בהקדם</span>';
-          submitBtn.style.background = '#2E7D32';
-          submitBtn.disabled = true;
-
-          setTimeout(() => {
-            submitBtn.innerHTML = originalText;
-            submitBtn.style.background = '';
-            submitBtn.disabled = false;
-            form.reset();
-            if (charCounter) charCounter.textContent = '0/500';
-          }, 3000);
-        }
-      });
-    }
-
-    // Add shake animation
-    const styleEl = document.createElement('style');
-    styleEl.textContent = `
-      @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        20% { transform: translateX(-8px); }
-        40% { transform: translateX(8px); }
-        60% { transform: translateX(-6px); }
-        80% { transform: translateX(4px); }
-      }
-    `;
-    document.head.appendChild(styleEl);
-  })();
 
 
 /* ZAPPY_PUBLISHED_LIGHTBOX_RUNTIME */
