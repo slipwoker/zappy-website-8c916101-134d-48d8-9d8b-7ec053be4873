@@ -9313,6 +9313,35 @@ html body :root { --border-dark: #4A3030 !important; }
     padding: 12px 14px;
   }
 }
+
+body .call-float {
+  position: fixed;
+  bottom: 96px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: var(--primary-color, var(--primary, #CC3333));
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 12px 0px;
+  z-index: 998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--background-color, var(--background, var(--bg-light, #FFFFFF)));
+  font-size: 26px;
+  text-decoration: none;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+body .call-float:hover {
+  background-color: #A8322A;
+  transform: scale(1.05);
+}
+
+body .call-float i {
+  line-height: 1;
+  color: var(--background-color, var(--background, var(--bg-light, #FFFFFF)));
+}
 /* mobile-submenu-overflow-fix */
 @media (max-width: 768px) {
   .navbar .sub-menu.mobile-expanded,
