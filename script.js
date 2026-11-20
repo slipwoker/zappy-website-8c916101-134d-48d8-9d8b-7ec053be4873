@@ -1969,20 +1969,12 @@ function withConsent(category, callback) {
 } catch (e) {
   if (typeof console !== 'undefined' && console.error) console.error('[Zappy] Added component script failed', e);
 }
-/* ZAPPY_CUSTOM_JS_START:13fb89a9c68a */
+/* ZAPPY_CUSTOM_JS_START:a38c9010e810 */
 (function () {
   function __zappyCustomInit() {
     try {
-(function () {
-  if (document.getElementById('call-float')) return;
-  var a = document.createElement('a');
-  a.id = 'call-float';
-  a.className = 'call-float';
-  a.href = 'tel:+972505414955';
-  a.setAttribute('aria-label', 'התקשרו אלינו');
-  a.innerHTML = '<i class="fas fa-phone-alt"></i>';
-  document.body.appendChild(a);
-})();
+// Phone call floating button is now added statically in HTML across all pages.
+// This block intentionally does nothing (placeholder retained to avoid re-appending).
     } catch (e) {
       if (typeof console !== 'undefined' && console.warn) { console.warn('[zappy-custom-js]', e); }
     }
@@ -1993,7 +1985,7 @@ function withConsent(category, callback) {
     __zappyCustomInit();
   }
 })();
-/* ZAPPY_CUSTOM_JS_END:13fb89a9c68a */
+/* ZAPPY_CUSTOM_JS_END:a38c9010e810 */
 
 
 /* ZAPPY_PUBLISHED_LIGHTBOX_RUNTIME */
